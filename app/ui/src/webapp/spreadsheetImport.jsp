@@ -74,7 +74,8 @@
 				*/%>
 				<h:panelGrid columns="2" columnClasses="prefixedCheckbox">
 				    <h:selectBooleanCheckbox id="released" value="#{spreadsheetUploadBean.assignment.released}" onclick="assignmentReleased(this.form.name, true);"
-						onkeypress="return submitOnEnter(event, 'gbForm:saveButton');"/>
+						onkeypress="return submitOnEnter(event, 'gbForm:saveButton');"
+						converter="javax.faces.Boolean" />
 					<h:outputLabel for="released" value="#{msgs.add_assignment_released}" />
 					
 					<h:outputText escape="false" value="&nbsp;" rendered="#{!spreadsheetUploadBean.localGradebook.assignmentsDisplayed}" />

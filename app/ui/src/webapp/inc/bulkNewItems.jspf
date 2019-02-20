@@ -1,3 +1,4 @@
+<%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
 <%/*
 	Additional Add Assignment panes for bulk creation of Gradebook Items
 	Accessed via <t:aliasBean alias="#{bean}" value="#{realPageBean}">...</t:aliasBean> .
@@ -128,7 +129,8 @@
 			  <h:panelGrid cellpadding="0" cellspacing="5" columns="2" columnClasses="prefixedCheckbox">
 	   			<h:selectBooleanCheckbox id="released" value="#{item.assignment.released}"
     				onclick="assignmentReleased((this.form.name + ':bulkNewAssignmentsTable:' + #{rowIndex}), true);"
-					onkeypress="return submitOnEnter(event, 'gbForm:saveButton');" />
+					onkeypress="return submitOnEnter(event, 'gbForm:saveButton');"
+					converter="javax.faces.Boolean" />
 				<h:outputLabel for="released" value="#{msgs.add_assignment_released}" />
 
 				<h:outputText escape="false" value="&nbsp;" rendered="#{!bean.localGradebook.assignmentsDisplayed}"/> 
