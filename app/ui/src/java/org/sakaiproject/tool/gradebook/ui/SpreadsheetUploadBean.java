@@ -46,7 +46,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -1387,7 +1387,7 @@ public class SpreadsheetUploadBean extends GradebookDependentBean implements Ser
 				if (pointsPossible != null) {
 					// params: gradebook id, name of assignment, points possible, due date, NOT counted, is released
 					this.assignmentId = getGradebookManager().createAssignment(getGradebookId(), assignmentName, pointsPossible, null,
-							Boolean.FALSE, Boolean.TRUE, Boolean.FALSE);
+							Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, null);
 					assignment = getGradebookManager().getAssignment(this.assignmentId);
 				} else {
 					// for this version, display error message saying non-match between import
@@ -1909,11 +1909,11 @@ public class SpreadsheetUploadBean extends GradebookDependentBean implements Ser
 				this.assignmentId = getGradebookManager().createAssignmentForCategory(getGradebookId(), newCategory.getId(),
 						this.assignment.getName(), this.assignment.getPointsPossible(), this.assignment.getDueDate(),
 						Boolean.valueOf(this.assignment.isNotCounted()), Boolean.valueOf(this.assignment.isReleased()),
-						this.assignment.isExtraCredit());
+						this.assignment.isExtraCredit(), this.assignment.getCategorizedSortOrder());
 			} else {
 				this.assignmentId = getGradebookManager().createAssignment(getGradebookId(), this.assignment.getName(),
 						this.assignment.getPointsPossible(), this.assignment.getDueDate(), Boolean.valueOf(this.assignment.isNotCounted()),
-						Boolean.valueOf(this.assignment.isReleased()), this.assignment.isExtraCredit());
+						Boolean.valueOf(this.assignment.isReleased()), this.assignment.isExtraCredit(), this.assignment.getSortOrder());
 			}
 
 			FacesUtil.addRedirectSafeMessage(getLocalizedString("add_assignment_save", new String[] { this.assignment.getName() }));
@@ -2368,11 +2368,11 @@ public class SpreadsheetUploadBean extends GradebookDependentBean implements Ser
 		for (int i = 0; i < l; i++) {
 			final HSSFCell cell = row.getCell((short) i);
 			String cellValue = "";
-			if (cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+			if (cell == null || cell.getCellType() == CellType.BLANK) {
 				cellValue = "";
-			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+			} else if (cell.getCellType() == CellType.STRING) {
 				cellValue = "\"" + cell.getStringCellValue() + "\"";
-			} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			} else if (cell.getCellType() == CellType.NUMERIC) {
 				final double value = cell.getNumericCellValue();
 				cellValue = getNumberFormat().format(value);
 				cellValue = "\"" + cellValue + "\"";
@@ -2419,11 +2419,11 @@ public class SpreadsheetUploadBean extends GradebookDependentBean implements Ser
 		for (int i = 0; i < l; i++) {
 			final XSSFCell cell = row.getCell((short) i);
 			String cellValue = "";
-			if (cell == null || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+			if (cell == null || cell.getCellType() == CellType.BLANK) {
 				cellValue = "";
-			} else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+			} else if (cell.getCellType() == CellType.STRING) {
 				cellValue = "\"" + cell.getStringCellValue() + "\"";
-			} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			} else if (cell.getCellType() == CellType.NUMERIC) {
 				final double value = cell.getNumericCellValue();
 				cellValue = getNumberFormat().format(value);
 				cellValue = "\"" + cellValue + "\"";
