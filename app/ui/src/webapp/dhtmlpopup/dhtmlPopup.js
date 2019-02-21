@@ -86,8 +86,8 @@ function dhtmlPopupShow(winName, e) {
 		if (leftPos > maxLeftPos) {
 			leftPos = maxLeftPos;
 		}
-		theDiv.style.left = (leftPos) + "px";
-		theDiv.style.top = (dhtmlGetPageYOffset() + e.clientY + 15) + "px";
+		theDiv.style.left = (leftPos - (window.innerWidth - theDiv.parentNode.offsetWidth) + 35) + "px";
+		theDiv.style.top = (dhtmlGetPageYOffset() + e.clientY + 15 - theDiv.parentNode.parentNode.offsetTop) + "px";
 	} else {
 		// The keyboard was used instead of the mouse, so we
 		// don't have a good starting position.
