@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.sakaiproject.gradebook.framework;
+package org.sakaiproject.tool.gradebook.framework;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +25,7 @@ import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.EntityProducer;
 import org.sakaiproject.entity.api.EntityTransferrer;
+import org.sakaiproject.entity.api.EntityTransferrerRefMigrator;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -43,7 +44,7 @@ import lombok.Setter;
  * Entity Producer for Gradebook. This is required to participate in other entity actions but also handles the transfer of data between
  * sites
  */
-public class GradebookEntityProducer implements EntityProducer, EntityTransferrer {
+public class GradebookEntityProducer implements EntityProducer, EntityTransferrer, EntityTransferrerRefMigrator {
 
 	protected static final String[] TOOL_IDS = { "sakai.gradebook.tool" };
 
@@ -133,35 +134,43 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 	}
 
 	@Override
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options) {
+	public void transferCopyEntities(String fromContext, String toContext, List<String> ids) {
+		transferCopyEntitiesRefMigrator(fromContext, toContext, ids);
+	}
 
-		final Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(fromContext);
+	@Override
+	public void transferCopyEntities(String fromContext, String toContext, List<String> ids, boolean cleanup) {
+		transferCopyEntitiesRefMigrator(fromContext, toContext, ids, cleanup);
+	}
 
-		final GradebookInformation gradebookInformation = this.gradebookService.getGradebookInformation(gradebook.getUid());
+	@Override
+	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List<String> ids) {
+		Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(fromContext);
 
-		final List<Assignment> assignments = this.gradebookService.getAssignments(fromContext);
+		GradebookInformation gradebookInformation = this.gradebookService.getGradebookInformation(gradebook.getUid());
+
+		List<Assignment> assignments = this.gradebookService.getAssignments(fromContext);
 
 		return this.gradebookService.transferGradebook(gradebookInformation, assignments, toContext, fromContext);
 	}
 
 	@Override
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options, boolean cleanup) {
+	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List<String> ids, boolean cleanup) {
+		if (cleanup) {
 
-		if (cleanup == true) {
-
-			final Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(toContext);
+			Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(toContext);
 
 			// remove assignments in 'to' site
-			final List<Assignment> assignments = this.gradebookService.getAssignments(gradebook.getUid());
+			List<Assignment> assignments = this.gradebookService.getAssignments(gradebook.getUid());
 			assignments.forEach(a -> this.gradebookService.removeAssignment(a.getId()));
 
 			// remove categories in 'to' site
-			final List<CategoryDefinition> categories = this.gradebookService.getCategoryDefinitions(gradebook.getUid());
+			List<CategoryDefinition> categories = this.gradebookService.getCategoryDefinitions(gradebook.getUid());
 			categories.forEach(c -> this.gradebookService.removeCategory(c.getId()));
 		}
 
 		// now migrate
-		return this.transferCopyEntities(fromContext, toContext, ids, null);
+		return transferCopyEntitiesRefMigrator(fromContext, toContext, ids);
 	}
 
 	@Override
