@@ -65,7 +65,7 @@
 
     <bean
         id="org.sakaiproject.gradebook.framework.GradebookEntityProducer"
-        class="org.sakaiproject.gradebook.framework.GradebookEntityProducer"
+        class="org.sakaiproject.tool.gradebook.framework.GradebookEntityProducer"
         init-method="init">
         <property name="entityManager" ref="org.sakaiproject.entity.api.EntityManager" />
         <property name="gradebookService" ref="org.sakaiproject.service.gradebook.GradebookService" />
@@ -74,7 +74,7 @@
 
     <bean
         id="org.sakaiproject.gradebook.framework.GradebookContextObserver"
-        class="org.sakaiproject.gradebook.framework.GradebookContextObserver"
+        class="org.sakaiproject.tool.gradebook.framework.GradebookContextObserver"
         parent="org.sakaiproject.gradebook.framework.GradebookEntityProducer">
     </bean>
     <!-- EB end -->
