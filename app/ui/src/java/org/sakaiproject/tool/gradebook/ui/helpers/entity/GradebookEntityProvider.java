@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.api.SecurityService;
@@ -211,10 +212,9 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
 
 		ArrayList<String> result = new ArrayList<String>();
 
-		Map<String, String> studentToPoints = gradebookService.getImportCourseGrade(gbID);
-		ArrayList<String> eids = new ArrayList<String>(studentToPoints.keySet());
-				
-		List<User> users = userDirectoryService.getUsersByEids(eids);
+		final Set<String> userUuids = getSite(siteId).getUsersIsAllowed("section.role.student");
+		final List<User> users = userDirectoryService.getUsers(userUuids);
+
 		for(User u: users) {
 			result.add(u.getId());
 		}
