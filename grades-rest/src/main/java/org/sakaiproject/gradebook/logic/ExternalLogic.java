@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,6 +42,7 @@ import org.sakaiproject.gradebook.entity.Student;
 import org.sakaiproject.javax.PagingPosition;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
+import org.sakaiproject.service.gradebook.shared.CourseGrade;
 import org.sakaiproject.service.gradebook.shared.CommentDefinition;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookInformation;
@@ -393,18 +395,20 @@ public class ExternalLogic {
         } catch (IdUnusedException e1) {
             throw new IllegalArgumentException("No course found with id (" + siteId + ")");
         }
+
+        final Set<String> userUuids = site.getUsersIsAllowed("section.role.student");
+        final List<User> users = userDirectoryService.getUsers(userUuids);
+
         // Get students grades for course. This method handles grade overrides.
-        Map courseGradeMap = gradebookService.getImportCourseGrade(siteId, false);
-        
-        String siteRef = site.getReference();
-        // use the method gradebook uses internally
-        List<User> studentUsers = securityService.unlockUsers("section.role.student", siteRef);
-        for (User user : studentUsers) {
+        Map<String, CourseGrade> courseGradeMap = gradebookService.getCourseGradeForStudents(siteId, new ArrayList<String>(userUuids));
+
+        for (User user : users) {
             Student s = new Student(user.getId(), user.getEid(), user.getDisplayName(), user.getSortName(), user.getEmail());
             s.fname = user.getFirstName();
             s.lname = user.getLastName();
             if (courseGradeMap!= null && courseGradeMap.containsKey(s.username)){
-            	s.courseGrade = (String)courseGradeMap.get(s.username); // Pull student course grade from the map.
+            	CourseGrade cg = courseGradeMap.get(s.username);
+            	s.courseGrade = cg.getDisplayGrade(); // Pull student course grade from the map.
             }
             students.add(s);
         }
