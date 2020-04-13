@@ -25,7 +25,6 @@ import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.EntityProducer;
 import org.sakaiproject.entity.api.EntityTransferrer;
-import org.sakaiproject.entity.api.EntityTransferrerRefMigrator;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -44,7 +43,7 @@ import lombok.Setter;
  * Entity Producer for Gradebook. This is required to participate in other entity actions but also handles the transfer of data between
  * sites
  */
-public class GradebookEntityProducer implements EntityProducer, EntityTransferrer, EntityTransferrerRefMigrator {
+public class GradebookEntityProducer implements EntityProducer, EntityTransferrer {
 
 	protected static final String[] TOOL_IDS = { "sakai.gradebook.tool" };
 
@@ -134,17 +133,7 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 	}
 
 	@Override
-	public void transferCopyEntities(String fromContext, String toContext, List<String> ids) {
-		transferCopyEntitiesRefMigrator(fromContext, toContext, ids);
-	}
-
-	@Override
-	public void transferCopyEntities(String fromContext, String toContext, List<String> ids, boolean cleanup) {
-		transferCopyEntitiesRefMigrator(fromContext, toContext, ids, cleanup);
-	}
-
-	@Override
-	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List<String> ids) {
+	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options) {
 		Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(fromContext);
 
 		GradebookInformation gradebookInformation = this.gradebookService.getGradebookInformation(gradebook.getUid());
@@ -155,7 +144,7 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 	}
 
 	@Override
-	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List<String> ids, boolean cleanup) {
+	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options, boolean cleanup) {
 		if (cleanup) {
 
 			Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(toContext);
@@ -170,7 +159,7 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 		}
 
 		// now migrate
-		return transferCopyEntitiesRefMigrator(fromContext, toContext, ids);
+		return transferCopyEntities(fromContext, toContext, ids, options);
 	}
 
 	@Override
