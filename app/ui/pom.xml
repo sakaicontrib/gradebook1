@@ -4,7 +4,7 @@
    <parent>
     <artifactId>sakai-gradebook-app</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>20-SNAPSHOT</version>
+    <version>21-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>org.sakaiproject</groupId>
@@ -137,11 +137,11 @@
 
 -->
 <!-- End database dependencies -->
-<!--${sakai.spring.groupId}${sakai.spring.artifactId}${sakai.spring.version}-->
+<!--org.springframeworkspring-core${sakai.spring.version}-->
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>${sakai.spring.test.artifactId}</artifactId>
-      <version>${sakai.spring.test.version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${sakai.spring.version}</version>
     </dependency>
     <dependency>
       <groupId>aopalliance</groupId>
@@ -212,7 +212,7 @@
       </exclusions>
     </dependency>
 <!-- Spring dependency -->
-<!--${sakai.spring.groupId}${sakai.spring.artifactId}${sakai.spring.version}provided-->
+<!--org.springframeworkspring-core${sakai.spring.version}provided-->
 <!-- Needed by MyFaces ExtensionsFilter -->
     <dependency>
       <groupId>commons-fileupload</groupId>
