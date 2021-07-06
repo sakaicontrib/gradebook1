@@ -85,16 +85,15 @@ public class AssignmentDetailsBean extends EnrollmentTableBean {
 
 		public ScoreRow() {
 		}
-		public ScoreRow(final EnrollmentRecord enrollment, final AssignmentGradeRecord gradeRecord, final Comment comment, final List gradingEvents, final boolean userCanGrade) {
-            Collections.sort(gradingEvents);
+		public ScoreRow(final EnrollmentRecord enrollment, final AssignmentGradeRecord gradeRecord, final Comment comment, final List<GradingEvent> gradingEvents, final boolean userCanGrade) {
+            Collections.sort(gradingEvents, GradingEvent.compareByDateGraded);
             this.enrollment = enrollment;
             this.gradeRecord = gradeRecord;
             this.comment = comment;
             this.userCanGrade = userCanGrade;
 
             this.eventRows = new ArrayList();
-            for (final Iterator iter = gradingEvents.iterator(); iter.hasNext();) {
-            	final GradingEvent gradingEvent = (GradingEvent)iter.next();
+            for (final GradingEvent gradingEvent : gradingEvents) {
             	this.eventRows.add(new GradingEventRow(gradingEvent));
             }
 
