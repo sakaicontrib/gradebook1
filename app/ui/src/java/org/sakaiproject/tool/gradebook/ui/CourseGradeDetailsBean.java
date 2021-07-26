@@ -34,10 +34,10 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterCsv;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterPdf;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterXls;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetUtil;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterCsv;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterPdf;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterXlsx;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetUtil;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
 import org.sakaiproject.service.gradebook.shared.StaleObjectModificationException;
@@ -468,7 +468,7 @@ public class CourseGradeDetailsBean extends EnrollmentTableBean {
 			}
             SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData("excel", fields),
             		getDownloadFileName(getLocalizedString("export_course_grade_prefix")),
-            		new SpreadsheetDataFileWriterXls());
+            		new SpreadsheetDataFileWriterXlsx());
         }
         else if(this.exportType.equalsIgnoreCase("PDF")){
         	if(log.isInfoEnabled()) {

@@ -43,10 +43,10 @@ import javax.faces.event.ActionEvent;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
 import org.sakaiproject.component.cover.ServerConfigurationService;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterCsv;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterPdf;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetDataFileWriterXls;
-import org.sakaiproject.jsf.spreadsheet.SpreadsheetUtil;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterCsv;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterPdf;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterXlsx;
+import org.sakaiproject.jsf2.spreadsheet.SpreadsheetUtil;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 import org.sakaiproject.section.api.coursemanagement.User;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
@@ -829,7 +829,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		getGradebookBean().postEvent("gradebook.downloadRoster", "/gradebook/" + getGradebookId() + "/" + getAuthzLevel(), false);
         SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, false),
         		getDownloadFileName(getLocalizedString("export_gradebook_prefix")),
-        		new SpreadsheetDataFileWriterXls());
+        		new SpreadsheetDataFileWriterXlsx());
     }
 
     public void exportCsvNoCourseGrade(final ActionEvent event){
@@ -866,11 +866,11 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         if (isUserAbleToGradeAll()) {
 			SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(true, false),
 					getDownloadFileName(getLocalizedString("export_gradebook_prefix")),
-					new SpreadsheetDataFileWriterXls());
+					new SpreadsheetDataFileWriterXlsx());
         } else {
 			SpreadsheetUtil.downloadSpreadsheetData(getSpreadsheetData(false, false),
             		getDownloadFileName(getLocalizedString("export_gradebook_prefix")),
-            		new SpreadsheetDataFileWriterXls());
+            		new SpreadsheetDataFileWriterXlsx());
         }
     }
 

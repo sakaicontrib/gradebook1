@@ -16,7 +16,7 @@
 
 package org.sakaiproject.tool.gradebook.ui;
 
-import org.sakaiproject.jsf.model.PhaseAware;
+import org.sakaiproject.jsf2.model.PhaseAware;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.jsf.util.HelperAwareJsfTool;
+import org.sakaiproject.jsf2.util.HelperAwareJsfTool;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.cover.SessionManager;
 

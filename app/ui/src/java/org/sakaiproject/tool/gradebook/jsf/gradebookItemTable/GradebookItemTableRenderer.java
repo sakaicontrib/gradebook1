@@ -16,7 +16,7 @@ import javax.faces.render.Renderer;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.myfaces.shared_impl.renderkit.html.HTML;
+import org.apache.myfaces.shared_tomahawk.renderkit.html.HTML;
 
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.tool.gradebook.Category;

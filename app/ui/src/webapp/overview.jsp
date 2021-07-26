@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
-<%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
+<%@ taglib uri="http://sakaiproject.org/jsf2/sakai" prefix="sakai" %>
 <script src="/library/js/spinner.js" type="text/javascript"></script>
 <f:view>
   <div class="portletBody">
@@ -26,8 +26,8 @@
 		</div>
 		
 		<sakai:tool_bar rendered="#{overviewBean.userAbleToEditAssessments}">
-    		<sakai:tool_bar_item value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" current="false" style="sakai_jsf_not_current_marker" />
-   			<sakai:tool_bar_item value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" current="false" style="sakai_jsf_not_current_marker" />
+    		<h:commandLink value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" style="sakai_jsf_not_current_marker" />
+   			<h:commandLink value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" style="sakai_jsf_not_current_marker" />
   		</sakai:tool_bar>
   		
   						

@@ -21,10 +21,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
-import org.apache.myfaces.taglib.html.HtmlDataTableTag;
+import org.apache.myfaces.shared_tomahawk.taglib.html.HtmlDataTableTag;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 
-import org.sakaiproject.jsf.util.TagUtil;
+import org.sakaiproject.jsf2.util.TagUtil;
 
 public class SpreadsheetUITag extends HtmlDataTableTag
 {
