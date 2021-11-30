@@ -26,17 +26,17 @@
 		<h:outputText value="#{msgs.hide_show_information}"/>
 	</div>
    	<h:dataTable id="hideColumns" value="#{rosterBean.gradableObjectColumns}" var="colVar" styleClass="listHier lines">
-   		<h:column rendered="#{colVar.assignmentColumn}">
+   		<h:column>
    			<f:facet name="header">
    				<h:outputText value="#{msgs.hide_show_hide}"/>
    			</f:facet>
-   			<h:selectBooleanCheckbox id="hide" value="#{colVar.hideInAllGradesTable}" title="#{msgs.hide_show_hide} #{colVar.name}" />
+   			<h:selectBooleanCheckbox id="hide" rendered="#{colVar.assignmentColumn}" value="#{colVar.hideInAllGradesTable}" title="#{msgs.hide_show_hide} #{colVar.name}" />
    		</h:column>
-   		<h:column rendered="#{colVar.assignmentColumn}">
+   		<h:column>
    			<f:facet name="header">
    				<h:outputText value="#{msgs.hide_show_assignment}"/>
    			</f:facet>
-   			<h:outputText value="#{colVar.name}"/>
+   			<h:outputText rendered="#{colVar.assignmentColumn}" value="#{colVar.name}"/>
    		</h:column>
    	</h:dataTable>
    
