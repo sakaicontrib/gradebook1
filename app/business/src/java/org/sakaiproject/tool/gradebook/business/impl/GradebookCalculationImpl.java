@@ -424,7 +424,8 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 	
 	@Override
     public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
-        super.applyDropScores(gradeRecords);
+        AssignmentGradeRecord firstRecord = gradeRecords.iterator().next();
+        super.applyDropScores(gradeRecords, firstRecord.getGradableObject().getGradebook().getCategory_type());
     }
 
 	@Override
