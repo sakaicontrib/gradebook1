@@ -463,7 +463,7 @@ public class InstructorViewBean extends ViewByStudentBean implements Serializabl
 		//do category results
 		final Map categoryResultMap = new HashMap();
 		final List categories = getGradebookManager().getCategories(getGradebookId());
-		getGradebookManager().addToCategoryResultMap(categoryResultMap, categories, gradeRecordMap, studentIdEnrRecMap);
+		getGradebookManager().addToCategoryResultMap(categoryResultMap, categories, gradeRecordMap, studentIdEnrRecMap, getGradebook().getCategory_type());
 		if (log.isDebugEnabled()) {
 			log.debug("init - categoryResultMap.keySet().size() = " + categoryResultMap.keySet().size());
 		}

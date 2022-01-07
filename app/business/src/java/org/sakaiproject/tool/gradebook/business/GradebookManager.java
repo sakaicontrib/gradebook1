@@ -159,7 +159,7 @@ public interface GradebookManager {
      */
     public void addToGradeRecordMap(Map gradeRecordMap, List gradeRecords, Map studentIdItemIdFunctionMap);
     
-    public void addToCategoryResultMap(Map categoryResultMap, List categories, Map gradeRecordMap, Map enrollmentMap);
+    public void addToCategoryResultMap(Map categoryResultMap, List categories, Map gradeRecordMap, Map enrollmentMap, int categoryType);
    
     /**
      * Gets all grade records that belong to a collection of enrollments in a
@@ -884,5 +884,5 @@ public interface GradebookManager {
     public void updateCategoryAndAssignmentsPointsPossible(final Long gradebookId, final Category category)
     throws ConflictingAssignmentNameException, StaleObjectModificationException;    
     
-    public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords);
+    public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords, int categoryType);
 }

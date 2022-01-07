@@ -386,7 +386,7 @@ public class AssignmentDetailsBean extends EnrollmentTableBean {
 
 				final List<AssignmentGradeRecord> studentGradeRecords = getGradebookManager().getAllAssignmentGradeRecords(getGradebookId(), studentUids);
 
-				getGradebookManager().applyDropScores(studentGradeRecords);
+				getGradebookManager().applyDropScores(studentGradeRecords, this.assignment.getGradebook().getCategory_type());
 
 				copyDroppedFromGradeFlag(gradeRecords, studentGradeRecords);
 

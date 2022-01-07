@@ -164,7 +164,7 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 	                    studentGradeRecs = studentIdGradeRecordsMap.get(cgr.getStudentId());
 	                }
 
-	                applyDropScores(studentGradeRecs);
+	                applyDropScores(studentGradeRecs, gradebook.getCategory_type());
 
 	                List totalEarned = getTotalPointsEarnedInternal(cgr.getStudentId(), gradebook, cates, studentGradeRecs, studentCountedAssigns);
 	                double totalPointsEarned = ((Double)totalEarned.get(0)).doubleValue();
@@ -423,8 +423,8 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 	}
 	
 	@Override
-    public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
-        super.applyDropScores(gradeRecords);
+    public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords, int categoryType) {
+        super.applyDropScores(gradeRecords, categoryType);
     }
 
 	@Override
@@ -434,3 +434,4 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 		return super.createCategory(gradebookId, name, weight, dropLowest, dropHighest, keepHighest, is_extra_credit, false);
 	}
 }
+

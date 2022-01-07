@@ -433,7 +433,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 
         //do category results
         this.categoryResultMap = new HashMap();
-        getGradebookManager().addToCategoryResultMap(this.categoryResultMap, categories, this.gradeRecordMap, studentIdEnrRecMap);
+        getGradebookManager().addToCategoryResultMap(this.categoryResultMap, categories, this.gradeRecordMap, studentIdEnrRecMap, getGradebook().getCategory_type());
         if (log.isDebugEnabled()) {
 			log.debug("init - categoryResultMap.keySet().size() = " + this.categoryResultMap.keySet().size());
 		}

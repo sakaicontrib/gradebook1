@@ -195,7 +195,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
     }
 
     @Override
-    public void addToCategoryResultMap(final Map categoryResultMap, final List categories, final Map gradeRecordMap, final Map enrollmentMap) {
+    public void addToCategoryResultMap(final Map categoryResultMap, final List categories, final Map gradeRecordMap, final Map enrollmentMap, final int categoryType) {
     	if (gradeRecordMap == null || gradeRecordMap.isEmpty()) {
 			return;
 		}
@@ -225,7 +225,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
 		    			gradeRecords.add(gradeRecord);
 
 		    		}
-		    		applyDropScores(gradeRecords);
+		    		applyDropScores(gradeRecords, categoryType);
 		    		category.calculateStatisticsPerStudent(gradeRecords, studentUid);
 
 		    		Map studentCategoryMap = (Map) categoryResultMap.get(studentUid);
@@ -1064,7 +1064,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
         final Set studentUids = getAllStudentUids(getGradebookUid(gradebookId));
         final List<AssignmentGradeRecord> gradeRecords = getAllAssignmentGradeRecords(gradebookId, studentUids);
         if(!includeDroppedScores) {
-            applyDropScores(gradeRecords);
+            applyDropScores(gradeRecords, getGradebook(gradebookId).getCategory_type());
         }
         final List assignments = getAssignmentsWithStats(gradebookId, sortBy, ascending, gradeRecords);
         return assignments;
@@ -1100,7 +1100,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
         final CourseGrade courseGrade = getCourseGrade(gradebookId);
         final Map gradeRecordMap = new HashMap();
         final List<AssignmentGradeRecord> gradeRecords = getAllAssignmentGradeRecords(gradebookId, studentUids);
-        applyDropScores(gradeRecords);
+        applyDropScores(gradeRecords, getGradebook(gradebookId).getCategory_type());
         addToGradeRecordMap(gradeRecordMap, gradeRecords);
 
         for (final Iterator iter = assignments.iterator(); iter.hasNext(); ) {
@@ -1198,7 +1198,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
         final Set studentUids = getAllStudentUids(getGradebookUid(gradebookId));
         final List<AssignmentGradeRecord> gradeRecords = getAssignmentGradeRecords(assignment, studentUids);
         if(!includeDroppedScores) {
-            applyDropScores(gradeRecords);
+            applyDropScores(gradeRecords, assignment.getGradebook().getCategory_type());
         }
         assignment.calculateStatistics(gradeRecords);
         return assignment;
@@ -2146,7 +2146,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
 
         final List gradeRecords = getAllAssignmentGradeRecords(gradebookId, studentUids);
         if(!includeDroppedScores) {
-            applyDropScores(gradeRecords);
+            applyDropScores(gradeRecords, getGradebook(gradebookId).getCategory_type());
         }
     	allAssignments = getAssignmentsWithStats(gradebookId, assignmentSort, assignAscending, gradeRecords);
 
@@ -2204,7 +2204,7 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
     	final Set studentUids = getAllStudentUids(getGradebookUid(gradebookId));
     	final List assignments = getAssignmentsWithNoCategory(gradebookId, assignmentSort, assignAscending);
     	final List<AssignmentGradeRecord> gradeRecords = getAllAssignmentGradeRecords(gradebookId, studentUids);
-        applyDropScores(gradeRecords);
+        applyDropScores(gradeRecords, getGradebook(gradebookId).getCategory_type());
     	for (final Iterator iter = assignments.iterator(); iter.hasNext(); ) {
     		final GradebookAssignment assignment = (GradebookAssignment)iter.next();
     		assignment.calculateStatistics(gradeRecords);

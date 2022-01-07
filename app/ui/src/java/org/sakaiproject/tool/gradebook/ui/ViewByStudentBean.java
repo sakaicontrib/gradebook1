@@ -256,7 +256,7 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
 
 		final List<AssignmentGradeRecord> studentGradeRecs = getGradebookManager().getStudentGradeRecords(this.gradebook.getId(),
 				this.studentUid);
-		getGradebookManager().applyDropScores(studentGradeRecs);
+		getGradebookManager().applyDropScores(studentGradeRecs, this.gradebook.getCategory_type());
 
 		final List<GradebookAssignment> assignments = getGradebookManager().getAssignments(this.gradebook.getId());
 		final List<GradebookAssignment> countedAssigns = new ArrayList<GradebookAssignment>();
@@ -627,7 +627,7 @@ public class ViewByStudentBean extends EnrollmentTableBean implements Serializab
 
 			// get the student grade records
 			final List gradeRecords = getGradebookManager().getStudentGradeRecordsConverted(this.gradebook.getId(), this.studentUid);
-			getGradebookManager().applyDropScores(gradeRecords);
+			getGradebookManager().applyDropScores(gradeRecords, this.gradebook.getCategory_type());
 
 			// The display may include categories and assignments, so we need a generic list
 			this.gradebookItems = new ArrayList();
