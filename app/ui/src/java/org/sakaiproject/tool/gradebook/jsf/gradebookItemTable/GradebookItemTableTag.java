@@ -1,5 +1,6 @@
 package org.sakaiproject.tool.gradebook.jsf.gradebookItemTable;
 
+import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -14,6 +15,7 @@ public class GradebookItemTableTag extends HtmlDataTableTag {
 	private String expanded;
 	private java.lang.String value;
 	private java.lang.String _var;
+	private java.lang.String _rendered;
 	private String cellpadding;
 	private String cellspacing;
 	private String columnClasses;
@@ -47,11 +49,12 @@ public class GradebookItemTableTag extends HtmlDataTableTag {
 		TagUtil.setString(component, "rowIndexVar", rowIndexVar);
 		
 		TagUtil.setString(component, "value", value);
+		TagUtil.setBoolean(component, "rendered", _rendered);
 		if (_var != null) {
 			data.setVar(_var);
 		}
-		//Application application =  FacesContext.getCurrentInstance().getApplication();
-		//data.setValueBinding("value", application.createValueBinding(value));
+		Application application =  FacesContext.getCurrentInstance().getApplication();
+		data.setValueBinding("value", application.createValueBinding(value));
 	}
 
 	
@@ -134,5 +137,17 @@ public class GradebookItemTableTag extends HtmlDataTableTag {
 	
 	public String getRowIndexVar() {
 		return rowIndexVar;
+	}
+
+	public void setValue(java.lang.String value) {
+		this.value = value;
+	}
+
+	public void setVar(java.lang.String _var) {
+		this._var = _var;
+	}
+
+	public void setRendered(java.lang.String _rendered) {
+		this._rendered = _rendered;
 	}
 }

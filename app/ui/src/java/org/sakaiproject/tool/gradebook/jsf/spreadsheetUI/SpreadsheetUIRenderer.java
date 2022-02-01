@@ -31,7 +31,6 @@ import java.util.List;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
-import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
@@ -83,7 +82,6 @@ public class SpreadsheetUIRenderer extends Renderer
 	int columnLock = Integer.parseInt(colLock);
 	
 	//Render Header Facets
-	UIComponent header = data.getFacet("header");
 	int headerFacets = getFacetCount(data, "header");
 	if(headerFacets > 0){
 
@@ -105,11 +103,17 @@ public class SpreadsheetUIRenderer extends Renderer
 			}
 			writer.startElement("li", data);
 			UIComponent facet = column.getFacet("header");
+			UIComponent extraHeaderFacet = column.getFacet("extra_header");
 			if (facet != null){
 				facet.encodeBegin(context);
 				facet.encodeChildren(context);
 				facet.encodeEnd(context);
-				//writer.writeText(facet.toString(), null);
+				//Encode "extra" header
+				if (extraHeaderFacet != null) {
+					extraHeaderFacet.encodeBegin(context);
+					extraHeaderFacet.encodeChildren(context);
+					extraHeaderFacet.encodeEnd(context);
+				}
 			}
 			writer.endElement("li");
 			count++;

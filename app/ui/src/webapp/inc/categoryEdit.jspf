@@ -4,7 +4,7 @@
 <legend><h4><h:outputText value="#{msgs.cat_heading}" styleClass="gbSection" /></h4></legend>
 <div class="indnt1 gbSection">
 	<h:selectOneRadio value="#{gradebookSetupBean.categorySetting}" id="categorySetting" layout="pageDirection" 
-			valueChangeListener="#{gradebookSetupBean.processCategorySettingChange}" onclick="reEnableCategoryDropInputs();this.form.submit();">
+			valueChangeListener="#{gradebookSetupBean.processCategorySettingChange}" onclick="reEnableCategoryDropInputs();this.form.submit();" styleClass="addRadioPadding">
 			<f:selectItem itemValue="noCategories" itemLabel="#{msgs.opt_no_categories}" />
       <f:selectItem itemValue="onlyCategories" itemLabel="#{msgs.opt_categories_only}" />
       <f:selectItem itemValue="categoriesAndWeighting" itemLabel="#{msgs.opt_categories_and_weighting}" />    
@@ -13,15 +13,15 @@
       <h:selectBooleanCheckbox id="showDropHighest" value="#{gradebookSetupBean.showDropHighestDisplayed}"
           onclick="toggleVisibilityDropScoresFields(this.form);"
 	      rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}"/>
-      <h:outputLabel for="showDropHighest" value="#{msgs.opt_show_drop_highest}" rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}"/>
+      <h:outputLabel for="showDropHighest" value="#{msgs.opt_show_drop_highest}" rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}" styleClass="addPaddingLeft addPaddingRight"/>
       <h:selectBooleanCheckbox id="showDropLowest" value="#{gradebookSetupBean.showDropLowestDisplayed}"
           onclick="toggleVisibilityDropScoresFields(this.form);"
 	      rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}"/>
-      <h:outputLabel for="showDropLowest" value="#{msgs.opt_show_drop_lowest}" rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}"/>
+      <h:outputLabel for="showDropLowest" value="#{msgs.opt_show_drop_lowest}" rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}" styleClass="addPaddingLeft addPaddingRight"/>
       <h:selectBooleanCheckbox id="showKeepHighest" value="#{gradebookSetupBean.showKeepHighestDisplayed}"
           onclick="toggleVisibilityDropScoresFields(this.form);"
 	      rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}"/>
-      <h:outputLabel for="showKeepHighest" value="#{msgs.opt_show_keep_highest}" rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}"/>
+      <h:outputLabel for="showKeepHighest" value="#{msgs.opt_show_keep_highest}" rendered="#{(gradebookSetupBean.categorySetting == 'onlyCategories' || gradebookSetupBean.categorySetting == 'categoriesAndWeighting')}" styleClass="addPaddingLeft"/>
 	  
 	  <br/>
 	

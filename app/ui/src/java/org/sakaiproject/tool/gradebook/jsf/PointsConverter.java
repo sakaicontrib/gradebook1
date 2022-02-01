@@ -38,6 +38,9 @@ import org.sakaiproject.util.ResourceLoader;
  */
 @Slf4j
 public class PointsConverter extends NumberConverter {
+
+	public static final String NULL_PLACEHOLDER = "NULL_PLACEHOLDER";
+
 	public PointsConverter() {
 		setType("number");
 		ResourceLoader rl = new ResourceLoader();
@@ -48,7 +51,7 @@ public class PointsConverter extends NumberConverter {
 		if (log.isDebugEnabled()) log.debug("getAsString(" + context + ", " + component + ", " + value + ")");
 
 		String formattedScore;
-		if (value == null) {
+		if (value == null || NULL_PLACEHOLDER.equals(value)) {
 			formattedScore = FacesUtil.getLocalizedString("score_null_placeholder");
 		} else {
 			if (value instanceof Number) {

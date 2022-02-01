@@ -17,11 +17,13 @@
 package org.sakaiproject.tool.gradebook.ui;
 
 import java.util.Map;
+import java.util.TimeZone;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.sakaiproject.time.api.UserTimeService;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -41,6 +43,7 @@ public class ConfigurationBean implements ApplicationContextAware{
 	
 	private Map<String, Object> pluginDefaults;
 	private ServerConfigurationService serverConfigurationService;
+	private UserTimeService userTimeService;
 	
 	/**
 	 * @param name
@@ -100,5 +103,13 @@ public class ConfigurationBean implements ApplicationContextAware{
 	public void setServerConfigurationService(
 			ServerConfigurationService serverConfigurationService) {
 		this.serverConfigurationService = serverConfigurationService;
+	}
+
+	public void setUserTimeService(UserTimeService userTimeService) {
+		this.userTimeService = userTimeService;
+	}
+
+	public TimeZone getUserTimeZone(){
+		return userTimeService.getLocalTimeZone();
 	}
 }

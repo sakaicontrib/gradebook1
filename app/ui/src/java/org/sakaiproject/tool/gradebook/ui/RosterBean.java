@@ -30,8 +30,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.el.MethodExpression;
+import javax.el.ValueExpression;
 import javax.faces.application.Application;
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlOutputText;
@@ -39,8 +40,11 @@ import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.MethodExpressionActionListener;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
+import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import org.apache.myfaces.custom.sortheader.HtmlCommandSortHeader;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.jsf2.spreadsheet.SpreadsheetDataFileWriterCsv;
@@ -60,6 +64,7 @@ import org.sakaiproject.tool.gradebook.GradebookAssignment;
 import org.sakaiproject.tool.gradebook.jsf.AssignmentPointsConverter;
 import org.sakaiproject.tool.gradebook.jsf.CategoryPointsConverter;
 import org.sakaiproject.tool.gradebook.jsf.FacesUtil;
+import org.sakaiproject.tool.gradebook.jsf.PointsConverter;
 import org.sakaiproject.util.ResourceLoader;
 
 import lombok.extern.slf4j.Slf4j;
@@ -90,7 +95,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		private Long assignmentId;
 		private Boolean inactive = false;
 		private Boolean hideInAllGradesTable = false;
-	        private Boolean hiddenChanged = false;
+		private Boolean hiddenChanged = false;
 
 		public GradableObjectColumn() {
 		}
@@ -162,6 +167,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 	private transient List studentRows;
 	private transient Map gradeRecordMap;
 	private transient Map categoryResultMap;
+	private transient HtmlPanelGroup dynamicDataTableGroup;
 
 	public class StudentRow implements Serializable {
         private EnrollmentRecord enrollment;
@@ -193,6 +199,13 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 
 	@Override
 	protected void init() {
+		final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		final Map<String, String> paramMap = context.getRequestParameterMap();
+		final String catId = paramMap.get("gbForm:selectCategoryFilter");
+		if (catId != null && !catId.equals(getSelectedCategoryUid())) {
+			this.setSelectedCategoryFilterValue(new Integer(catId));
+		}
+
 		// set the roster filter
 		super.setSelectedSectionFilterValue(getSelectedSectionFilterValue());
 		super.init();
@@ -519,6 +532,9 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
             this.studentRows.add(new StudentRow(enrollment));
         }
 
+		// Setup datatable
+		populateDynamicDataTable();
+
         // set breadcrumb page for navigation
 //		SessionManager.getCurrentToolSession().setAttribute("breadcrumbPage", "roster");
 
@@ -540,19 +556,153 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		}
 	}
 
-	// The roster table uses assignments as columns, and therefore the component
-	// model needs to have those columns added dynamically, based on the current
-	// state of the gradebook.
-	// In JSF 1.1, dynamic data table columns are managed by binding the component
-	// tag to a bean property.
+	/**
+	 * Return an empty list if the input list happens to be null, otherwise, return the input list
+	 * @param theList
+	 * @param <T>
+	 * @return
+	 */
+	private static <T> List<T> nullSafe( List<T> theList ) {
+		return theList == null ? Collections.emptyList() : theList;
+	}
 
-	// It's not exactly intuitive, but the convention is for the bean to return
-	// null, so that JSF can create and manage the UIData component itself.
-	public HtmlDataTable getRosterDataTable() {
-		if (log.isDebugEnabled()) {
-			log.debug("getRosterDataTable");
+	private ValueExpression createValueExpression(String valueExpression, Class<?> valueType) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		return facesContext.getApplication().getExpressionFactory().createValueExpression(
+				facesContext.getELContext(), valueExpression, valueType);
+	}
+
+	private MethodExpression createMethodActionExpression(String valueExpression) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		return facesContext.getApplication().getExpressionFactory().createMethodExpression(
+				facesContext.getELContext(), valueExpression, null, new Class[]{ActionEvent.class});
+	}
+
+	private MethodExpressionActionListener createActionListenerExpression(String valueExpression) {
+		return new MethodExpressionActionListener(createMethodActionExpression(valueExpression));
+	}
+
+	private void populateDynamicDataTable() {
+		HtmlDataTable dynamicDataTable = null;
+		if (dynamicDataTableGroup != null) {
+			if (dynamicDataTableGroup.getChildCount() > 0 && dynamicDataTableGroup.getChildren().get(0) instanceof HtmlDataTable) {
+				// Find existing table, since there might be sorting details set
+				dynamicDataTable = (HtmlDataTable) dynamicDataTableGroup.getChildren().get(0);
+				dynamicDataTable.getChildren().clear();
+			}
 		}
-		return null;
+
+		if (dynamicDataTable == null) {
+			//Initialize table and set default sorting
+			dynamicDataTable = new HtmlDataTable();
+			dynamicDataTable.setSortColumn(getSortColumn());
+			dynamicDataTable.setSortAscending(isSortAscending());
+
+//			// Set sortable to false, otherwise JSF will automatically set its own command sort headers
+			dynamicDataTable.setSortable(false);
+		}
+
+		// Create <h:dataTable value="#{rosterBean.studentRows}" var="row">.
+		dynamicDataTable.setValueExpression("value",
+				createValueExpression("#{rosterBean.studentRows}", List.class));
+		dynamicDataTable.setVar("row");
+
+		dynamicDataTable.getAttributes().put("colLock", getColLock());
+		dynamicDataTable.getAttributes().put("initialHeight", getInitialHeight());
+		dynamicDataTable.setRendererType("SpreadsheetUIRenderer");
+
+		// set static columns
+		/*
+			<h:column id="studentNameData">
+				<f:facet name="header">
+		            <t:commandSortHeader columnName="studentSortName" immediate="true" arrow="true" actionListener="#{rosterBean.sort}">
+		                <h:outputText value="#{msgs.roster_student_name}"/>
+		            </t:commandSortHeader>
+		    </f:facet>
+				<h:commandLink action="instructorView">
+					<h:outputText value="#{row.sortName}"/>
+					<f:param name="studentUid" value="#{row.studentUid}"/>
+					<f:param name="returnToPage" value="roster" />
+				</h:commandLink>
+			</h:column>
+		*/
+
+		HtmlSimpleColumn studNameCol = new HtmlSimpleColumn();
+		dynamicDataTable.getChildren().add(studNameCol);
+		HtmlCommandSortHeader studNameHeader = new HtmlCommandSortHeader();
+		studNameHeader.setId("studName_sorthdr");
+		studNameHeader.setRendererType("org.apache.myfaces.SortHeader");
+		studNameHeader.setValue(getLocalizedString("roster_student_name"));
+		studNameHeader.setColumnName("studentSortName");
+		studNameHeader.setImmediate(true);
+		studNameHeader.setArrow(true);
+		studNameHeader.addActionListener(createActionListenerExpression("#{rosterBean.sort}"));
+		studNameCol.setId("studentNameData");
+		studNameCol.setHeader(studNameHeader);
+		studNameCol.setSortable(true);
+
+		HtmlCommandLink link = new HtmlCommandLink();
+		link.setValueExpression("value",
+				createValueExpression("#{row.sortName}", String.class));
+		link.setActionExpression(createMethodActionExpression("instructorView"));
+		link.getAttributes().put("studentUid", createValueExpression("#{row.studentUid}", String.class));
+		link.getAttributes().put("returnToPage", "roster");
+
+		studNameCol.getChildren().add(link);
+
+		/*
+			<h:column id="studentIdData">
+				<f:facet name="header">
+		            <t:commandSortHeader columnName="studentDisplayId" immediate="true" arrow="true" actionListener="#{rosterBean.sort}">
+		                <h:outputText value="#{msgs.roster_student_id}"/>
+		            </t:commandSortHeader>
+		        </f:facet>
+				<h:outputText value="#{row.displayId}"/>
+			</h:column>
+		 */
+
+		HtmlSimpleColumn studIdCol = new HtmlSimpleColumn();
+		dynamicDataTable.getChildren().add(studIdCol);
+		HtmlCommandSortHeader studIdHeader = new HtmlCommandSortHeader();
+		studIdHeader.setId("studId_sorthdr");
+		studIdHeader.setRendererType("org.apache.myfaces.SortHeader");
+		studIdHeader.setValue(getLocalizedString("roster_student_id"));
+		studIdHeader.setColumnName("studentDisplayId");
+		studIdHeader.setImmediate(true);
+		studIdHeader.setArrow(true);
+		studIdHeader.addActionListener(createActionListenerExpression("#{rosterBean.sort}"));
+		studIdCol.setId("studentIdData");
+		studIdCol.setHeader(studIdHeader);
+		studIdCol.setSortable(true);
+
+		HtmlOutputText output = new HtmlOutputText();
+		output.setValueExpression("value",
+				createValueExpression("#{row.displayId}", String.class));
+
+		studIdCol.getChildren().add(output);
+
+		//Do dynamic column stuff
+		setRosterDataTable(dynamicDataTable);
+
+		// Add the datatable to <h:panelGroup binding="#{rosterBean.dynamicDataTableGroup}">.
+		if (dynamicDataTableGroup != null) {
+			dynamicDataTableGroup.getChildren().clear();
+			dynamicDataTableGroup.getChildren().add(dynamicDataTable);
+		}
+
+	}
+
+	public HtmlPanelGroup getDynamicDataTableGroup() {
+		// This will be called once in the first RESTORE VIEW phase.
+		if (dynamicDataTableGroup == null) {
+			dynamicDataTableGroup = new HtmlPanelGroup();
+			init();
+		}
+		return dynamicDataTableGroup;
+	}
+
+	public void setDynamicDataTableGroup(HtmlPanelGroup dynamicDataTableGroup) {
+		this.dynamicDataTableGroup = dynamicDataTableGroup;
 	}
 
 	public void setRosterDataTable(final HtmlDataTable rosterDataTable) {
@@ -567,30 +717,11 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 					"HtmlDataTable rosterDataTable == null!");
 		}
 
-		//check if columns of changed due to categories
-		final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		final Map paramMap = context.getRequestParameterMap();
-		final String catId = (String) paramMap.get("gbForm:selectCategoryFilter");
-		//due to this set method getting called before all others, including the setSelectCategoryFilterValue,
-		// we have to manually set the value, then call init to get the new gradableObjectColumns array
-		if(catId != null && !catId.equals(getSelectedCategoryUid())) {
-			this.setSelectedCategoryFilterValue(new Integer(catId));
-			init();
-			//now destroy all of the columns to be readded
-			rosterDataTable.getChildren().removeAll( rosterDataTable.getChildren().subList(2, rosterDataTable.getChildren().size()));
-		}
-
-
         // Set the columnClasses on the data table
-        final StringBuilder colClasses = new StringBuilder("left,left,");
-        for(final Iterator iter = this.gradableObjectColumns.iterator(); iter.hasNext();) {
-        	iter.next();
-            colClasses.append("center");
-            if(iter.hasNext()) {
-                colClasses.append(",");
-            }
-        }
-        rosterDataTable.setColumnClasses(colClasses.toString());
+		List<String> colClasses = new ArrayList<>();
+		nullSafe(this.gradableObjectColumns).forEach(col -> colClasses.add("center"));
+
+        rosterDataTable.setColumnClasses("left,left," + StringUtils.join(colClasses, ","));
 
 		if (rosterDataTable.findComponent(ASSIGNMENT_COLUMN_PREFIX + "0") == null) {
 			final Application app = FacesContext.getCurrentInstance().getApplication();
@@ -598,11 +729,12 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 			// Add columns for each assignment. Be sure to create unique IDs
 			// for all child components.
 			int colpos = 0;
-			for (final Iterator iter = this.gradableObjectColumns.iterator(); iter.hasNext(); colpos++) {
-				final GradableObjectColumn columnData = (GradableObjectColumn)iter.next();
+			for (final Iterator<GradableObjectColumn> iter = nullSafe(this.gradableObjectColumns).iterator(); iter.hasNext(); colpos++) {
+				final GradableObjectColumn columnData = iter.next();
 
-				final UIColumn col = new UIColumn();
+				final HtmlSimpleColumn col = new HtmlSimpleColumn();
 				col.setId(ASSIGNMENT_COLUMN_PREFIX + colpos);
+				col.setSortable(true);
 				if(columnData.getHideInAllGradesTable()){
 					col.setRendered(false);
 				}
@@ -656,11 +788,14 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 
 		                //make a panel group to add link
 		                final HtmlPanelGroup pg = new HtmlPanelGroup();
-		                pg.getChildren().add(sortHeader);
 		                pg.getChildren().add(br);
 		                pg.getChildren().add(detailsLink);
 
-		                col.setHeader(pg);
+						//The data table is much happier when the sort stuff is the only thing in the header
+						col.setHeader(sortHeader);
+
+						//Put the "extra" stuff in a new facet, which still gets rendered in the header via the SpreadsheetUIRenderer
+						col.getFacets().put("extra_header", pg);
 	                } else {
 	                	col.setHeader(sortHeader);
 	                }
@@ -693,10 +828,11 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 					}else{
 						//Unassigned Category
 						final HtmlOutputText headerText = new HtmlOutputText();
-						headerText.setId(ASSIGNMENT_COLUMN_PREFIX + "hrd_" + colpos);
+						headerText.setId(ASSIGNMENT_COLUMN_PREFIX + "hdr_" + colpos);
 						headerText.setValue(columnData.getName());
 
 						col.setHeader(headerText);
+						col.setSortable(false);
 					}
 				}
 
@@ -704,12 +840,16 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 				contents.setEscape(false);
 				contents.setId(ASSIGNMENT_COLUMN_PREFIX + "cell_" + colpos);
 				if(!columnData.getCategoryColumn()){
+					// Converters no longer run on null values, so we need a special placeholder so we can let the converter do its thing
+					String beanValue = "row.scores[rosterBean.gradableObjectColumns[" + colpos + "].id]";
 					contents.setValueBinding("value",
-							app.createValueBinding("#{row.scores[rosterBean.gradableObjectColumns[" + colpos + "].id]}"));
+							app.createValueBinding("#{empty " + beanValue + " ? '" + PointsConverter.NULL_PLACEHOLDER + "' : " + beanValue + "}"));
 					contents.setConverter(new AssignmentPointsConverter());
 				} else {
+					// Converters no longer run on null values, so we need a special placeholder so we can let the converter do its thing
+					String beanValue = "row.categoryResults[rosterBean.gradableObjectColumns[" + colpos + "].id]";
 					contents.setValueBinding("value",
-							app.createValueBinding("#{row.categoryResults[rosterBean.gradableObjectColumns[" + colpos + "].id]}"));
+							app.createValueBinding("#{empty " + beanValue + " ? '" + PointsConverter.NULL_PLACEHOLDER + "' : " + beanValue + "}"));
 					contents.setConverter(new CategoryPointsConverter());
 				}
 
@@ -736,6 +876,11 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 
 	public List getStudentRows() {
 		return this.studentRows;
+	}
+
+	public String getInitialHeight() {
+		int height = nullSafe(getStudentRows()).size() * 32;
+		return height + "px";
 	}
 
 	public String getColLock() {

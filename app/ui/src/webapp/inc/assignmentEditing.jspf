@@ -61,13 +61,13 @@
 		<h:outputText style="font-weight:normal;" value=" #{msgs.date_entry_format_description}"/>
 	</h:panelGroup>
 	<h:panelGroup rendered="#{!bean.assignment.externallyMaintained}">
-    <t:inputCalendar id="dueDate" value="#{bean.assignment.dueDate}" renderAsPopup="true" renderPopupButtonAsImage="true" popupTodayString="#{msgs.date_entry_today_is}" popupWeekString="#{msgs.date_entry_week_header}" popupDateFormat="#{msgs.date_entry_format}" popupGotoString="#{msgs.date_entry_goto}" />
+		<h:inputText value="#{bean.assignment.dueDate}" id="dueDate" styleClass="gbDatePicker"><f:convertDateTime pattern="#{msgs.date_entry_format}" /></h:inputText>
 		<h:message for="dueDate" styleClass="alertMessageInline" />
 	</h:panelGroup>
 	
 	<h:outputText value="#{msgs.edit_assignment_due_date_external}" rendered="#{bean.assignment.externallyMaintained}" />
 	<h:outputText value="#{bean.assignment.dueDate}" rendered="#{bean.assignment.externallyMaintained}">
-   	<gbx:convertDateTime/>
+   	<gbx:convertDateTime type="date" dateStyle="medium"/>
   </h:outputText>
 	
 	<h:outputLabel for="selectCategory" id="categoryLabel" value="#{msgs.add_assignment_category}" rendered="#{bean.categoriesEnabled}" />
@@ -108,4 +108,18 @@
 <script type="text/javascript">
 	assignmentReleased('gbForm', false);
 	categorySelected('gbForm', '<h:outputText value="#{bean.extraCreditCategories}"/>');
+
+	jQuery(document).ready(function(){
+		localDatePicker({
+			input: '#gbForm\\:dueDate',
+			useTime: 0,
+			allowEmptyDate: true,
+			val: $('#gbForm\\:dueDate').val(),
+			ashidden: {
+				iso8601: 'dueDateISO8601',
+				month: "gbForm_dueDate_month",
+				day: "gbForm_dueDate_day",
+				year: "gbForm_dueDate_year"}
+		});
+	});
 </script>
