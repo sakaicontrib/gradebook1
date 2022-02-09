@@ -423,10 +423,12 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 	}
 	
 	@Override
-    public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
-        AssignmentGradeRecord firstRecord = gradeRecords.iterator().next();
-        super.applyDropScores(gradeRecords, firstRecord.getGradableObject().getGradebook().getCategory_type());
-    }
+		public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
+				if (gradeRecords != null && gradeRecords.iterator().hasNext()) {
+					AssignmentGradeRecord firstRecord = gradeRecords.iterator().next();
+					super.applyDropScores(gradeRecords, firstRecord.getGradableObject().getGradebook().getCategory_type());
+				}
+		}
 
 	@Override
 	public Long createCategory(Long gradebookId, String name, Double weight, Integer dropLowest, Integer dropHighest,
