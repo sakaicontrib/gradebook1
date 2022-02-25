@@ -1,7 +1,6 @@
 <link href="dhtmlpopup/dhtmlPopup.css" rel="stylesheet" type="text/css" />
 <script src="dhtmlpopup/dhtmlPopup.js" type="text/javascript"></script>
 <script src="js/dynamicSizeCheck.js" type="text/javascript"></script>
-<script src="/library/js/jquery.js" type="text/javascript"></script>
 <script src="js/scoringAgent/integration.js" type="text/javascript"></script>
 <script src="/library/js/spinner.js" type="text/javascript"></script>
 
