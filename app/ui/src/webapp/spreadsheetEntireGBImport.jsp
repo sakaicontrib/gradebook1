@@ -33,13 +33,13 @@
             <%-- Step 1: Download template --%>
  	            <h4><h:outputText value="#{msgs.import_entire_template}"/></h4>
  	            <br />
-		        <h:form id="gbExportForm">
+		        <h:form id="gbExportForm" styleClass="addPaddingContainer">
               <h:graphicImage value="/../../library/image/sakai/excel.gif" alt="" />
               <h:commandLink actionListener="#{rosterBean.exportXlsNoCourseGrade}">
                 <h:outputText value="#{msgs.import_entire_template_excel}"/>
               </h:commandLink>
               
-              <h:outputText value="#{msgs.import_entire_template_or}" />
+              <span><h:outputText value="#{msgs.import_entire_template_or}" /></span>
                 
  	    	      <h:graphicImage value="images/silk/page_white.png" alt="" />
     	    	  <h:commandLink actionListener="#{rosterBean.exportCsvNoCourseGrade}">
@@ -70,7 +70,7 @@
             		</h:outputLabel>
             		<t:inputFileUpload id="fileupload" value="#{spreadsheetUploadBean.upFile}" storage="file" required="true" accept="application/vnd.ms-excel"/>
 					*/%>
-            		<h:outputLabel for="pickedFileDesc" value="#{msgs.upload_view_choose_file}"/>
+            		<h:outputLabel for="pickedFileDesc" value="#{msgs.upload_view_choose_file}" styleClass="addPaddingRight"/>
                 	<h:inputText id="pickedFileDesc" value="#{spreadsheetUploadBean.pickedFileDesc}" required="true" readonly="true"/>
             		<f:verbatim>
             			</td>

@@ -13,6 +13,7 @@
 		</property>
 		<property name="serverConfigurationService"
 			ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+		<property name="userTimeService" ref="org.sakaiproject.time.api.UserTimeService" />
 	</bean>
 
 	<!--

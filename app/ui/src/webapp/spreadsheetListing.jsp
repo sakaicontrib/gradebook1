@@ -44,7 +44,7 @@
                         <h:outputText value="#{msgs.loading_dock_table_datecreated}"/>
                     </f:facet>
                     <h:outputText value="#{row.dateCreated}">
-                        <f:convertDateTime pattern="d MMM yyyy  H:mm:ss"/>
+                        <f:convertDateTime pattern="d MMM yyyy  H:mm:ss" timeZone="#{GradebookBean.configurationBean.userTimeZone}"/>
                     </h:outputText>
                 </t:column>
 

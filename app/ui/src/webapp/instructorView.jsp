@@ -41,6 +41,7 @@
 		<div class="nav indnt3 gbSection">
 			<h:commandButton
 				disabled="#{instructorViewBean.first}"
+				immediate="true"
 				actionListener="#{instructorViewBean.processStudentUidChange}"
 				value="#{msgs.inst_view_prev}"
 				title="#{instructorViewBean.previousStudent.user.displayName}"
@@ -55,6 +56,7 @@
 			
 			<h:commandButton
 				disabled="#{instructorViewBean.last}"
+				immediate="true"
 				actionListener="#{instructorViewBean.processStudentUidChange}"
 				value="#{msgs.inst_view_next}"
 				title="#{instructorViewBean.nextStudent.user.displayName}"
@@ -116,7 +118,6 @@
 					<h:commandButton
 						id="clearButton2"
 						value="#{msgs.inst_view_clear}"
-						action=""
 						immediate="true"
 						accesskey="c"
 						title="#{msgs.inst_view_clear}"
@@ -192,7 +193,7 @@
 					</f:facet>
 
 					<h:outputText value="#{row.associatedAssignment.dueDate}" rendered="#{row.assignment && row.associatedAssignment.dueDate != null}">
-						<gbx:convertDateTime />
+						<gbx:convertDateTime type="date" dateStyle="medium" />
 					</h:outputText>
 					<h:outputText value="#{msgs.score_null_placeholder}" rendered="#{row.assignment && row.associatedAssignment.dueDate == null}"/>
 				</h:column>
@@ -328,7 +329,6 @@
 				<h:commandButton
 					id="clearButton1"
 					value="#{msgs.inst_view_clear}"
-					action=""
 					immediate="true"
 					accesskey="c"
 					title="#{msgs.inst_view_clear}"

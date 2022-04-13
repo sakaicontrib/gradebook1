@@ -39,7 +39,7 @@ import javax.faces.event.FacesEvent;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.sakaiproject.jsf.util.LocaleUtil;
+import org.sakaiproject.jsf2.util.LocaleUtil;
 import org.sakaiproject.tool.gradebook.ui.MessagingBean;
 
 /**

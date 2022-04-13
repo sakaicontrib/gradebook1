@@ -140,7 +140,7 @@ function addItemScreen()
 	}
 
 	if (numBulkItems == MAX_NEW_ITEMS - 1)
-		$("gbForm:addSecond").style.display = "none";
+		document.getElementById("gbForm:addSecond").style.display = "none";
 
 	setMainFrameHeight(thisId, 'shrink');
 }
@@ -352,7 +352,7 @@ function eraseAndHide(idPrefix, rowIndex) {
 	// in order to hide it
 	// tbodyPrefix - need to chop off the rowIndex from id prefix
 	tbodyPrefix = idPrefix.substring(0,idPrefix.lastIndexOf(':'));
-	var element = document.getElementById(tbodyPrefix + ':tbody_element').rows[rowIndex];
+	var element = document.getElementById(tbodyPrefix).rows[rowIndex];
   	element.className = "hide" + element.className.substring(4);
    	element.style.display = "none";
  }
@@ -365,7 +365,6 @@ function eraseAndHide(idPrefix, rowIndex) {
 // show is then hidden.
 //*********************************************************************
 function removeItem(event, idPrefix, rowIndex) {
-	var element = Event.element(event);
 	var numBulkItems = getNumTotalItem();
 	
     for (i = rowIndex; i < (MAX_NEW_ITEMS-1); i++) {
@@ -379,7 +378,7 @@ function removeItem(event, idPrefix, rowIndex) {
 	}
 	
 	// just in case we were full up and now we're not
-	$("gbForm:addSecond").style.display = "inline";
+	document.getElementById("gbForm:addSecond").style.display = "inline";
 	
 	if (numBulkItems == 2) {
 		// make sure delete link on first item is removed since

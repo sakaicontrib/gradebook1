@@ -79,7 +79,7 @@
 
 				<h:outputText id="dueDateLabel" value="#{msgs.due_date}"/>
 				<h:outputText id="dueDate" value="#{assignmentDetailsBean.assignment.dueDate}" rendered="#{assignmentDetailsBean.assignment.dueDate != null}" >
-                     <gbx:convertDateTime/>
+                     <gbx:convertDateTime type="date" dateStyle="medium"/>
                 </h:outputText>
 				<h:outputText id="dueDatePlaceholder" value="#{msgs.score_null_placeholder}" rendered="#{assignmentDetailsBean.assignment.dueDate == null}" />
 

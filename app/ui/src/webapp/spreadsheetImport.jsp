@@ -1,4 +1,7 @@
 <f:view>
+	<script>includeLatestJQuery('editAssignment.jsp');</script>
+    <link rel="stylesheet" href="/library/webjars/jquery-ui/1.12.1/jquery-ui.min.css" type="text/css" />
+    <script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
 	<div class="portletBody">
      <h:form id="gbForm">
        <t:aliasBean alias="#{bean}" value="#{spreadsheetUploadBean}">
@@ -44,7 +47,7 @@
 						<h:outputText style="font-weight:normal;" value=" #{spreadsheetUploadBean.dateEntryFormatDescription}"/>
 					</h:panelGroup>
 					<h:panelGroup>
-				    <t:inputCalendar id="dueDate" value="#{spreadsheetUploadBean.assignment.dueDate}" renderAsPopup="true" renderPopupButtonAsImage="true" popupTodayString="#{msgs.date_entry_today_is}" popupWeekString="#{msgs.date_entry_week_header}" />
+						<h:inputText value="#{spreadsheetUploadBean.assignment.dueDate}" id="dueDate" styleClass="gbDatePicker"><f:convertDateTime pattern="#{msgs.date_entry_format}" /></h:inputText>
 						<h:message for="dueDate" styleClass="alertMessageInline" />
 					</h:panelGroup>
 					
@@ -92,6 +95,20 @@
 				
 				<script type="text/javascript">
 					assignmentReleased('gbForm', false);
+
+                    jQuery(document).ready(function(){
+                        localDatePicker({
+                            input: '#gbForm\\:dueDate',
+                            useTime: 0,
+                            allowEmptyDate: true,
+                            val: $('#gbForm\\:dueDate').val(),
+                            ashidden: {
+                                iso8601: 'dueDateISO8601',
+                                month: "gbForm_dueDate_month",
+                                day: "gbForm_dueDate_day",
+                                year: "gbForm_dueDate_year"}
+                        });
+                    });
 				</script>
 
        <p class="act calendarPadding">

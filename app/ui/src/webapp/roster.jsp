@@ -1,6 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:set var="const" value="32"/>
 
 <f:view>
 	<script type="text/javascript">includeLatestJQuery('gradebook_roster');</script>
@@ -87,38 +84,7 @@
 			<%@ include file="/inc/filterPagingRoster.jspf"%>
 		</t:aliasBean>
 
-          <c:set var="initHeight" value="${(fn:length(rosterBean.studentRows)) *32}"/>
-
-		<gbx:spreadsheetUI 
-			colLock="#{rosterBean.colLock}"
-			initialHeight="${initHeight}px"
-			value="#{rosterBean.studentRows}" 
-			binding="#{rosterBean.rosterDataTable}" 
-			sortColumn="#{rosterBean.sortColumn}"
-            sortAscending="#{rosterBean.sortAscending}"
-			var="row">
-			<h:column id="studentNameData">
-				<f:facet name="header">
-		            <t:commandSortHeader columnName="studentSortName" immediate="true" arrow="true" actionListener="#{rosterBean.sort}">
-		                <h:outputText value="#{msgs.roster_student_name}"/>
-		            </t:commandSortHeader>
-		    </f:facet>
-				<h:commandLink action="instructorView">
-					<h:outputText value="#{row.sortName}"/>
-					<f:param name="studentUid" value="#{row.studentUid}"/>
-					<f:param name="returnToPage" value="roster" />
-				</h:commandLink>
-			</h:column>
-			<h:column id="studentIdData">
-				<f:facet name="header">
-		            <t:commandSortHeader columnName="studentDisplayId" immediate="true" arrow="true" actionListener="#{rosterBean.sort}">
-		                <h:outputText value="#{msgs.roster_student_id}"/>
-		            </t:commandSortHeader>
-		        </f:facet>
-				<h:outputText value="#{row.displayId}"/>
-			</h:column>
-			<%/* Assignment columns will be dynamically appended, starting here. */%>
-		</gbx:spreadsheetUI>
+		<h:panelGroup id="dynamicDataTableGroup" binding="#{rosterBean.dynamicDataTableGroup}" />
 
 		<p class="instruction">
 			<h:outputText value="#{msgs.roster_no_enrollments}" rendered="#{rosterBean.emptyEnrollments}" />

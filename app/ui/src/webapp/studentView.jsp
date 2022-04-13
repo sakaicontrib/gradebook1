@@ -126,7 +126,7 @@
 					</f:facet>
 
 					<h:outputText value="#{row.associatedAssignment.dueDate}" rendered="#{row.assignment && row.associatedAssignment.dueDate != null}">
-						<gbx:convertDateTime />
+						<gbx:convertDateTime type="date" dateStyle="medium"/>
 					</h:outputText>
 					<h:outputText value="#{msgs.score_null_placeholder}" rendered="#{row.assignment && row.associatedAssignment.dueDate == null}"/>
 				</h:column>

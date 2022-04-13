@@ -110,8 +110,7 @@
 					<h:outputLabel for="dueDate" id="dueDateLabel" value="#{msgs.due_date} #{msgs.date_entry_format_description}"/>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{!item.assignment.externallyMaintained}">
-  					<t:inputCalendar id="dueDate" value="#{item.assignment.dueDate}" renderAsPopup="true" renderPopupButtonAsImage="true"
-  							popupTodayString="#{msgs.date_entry_today_is}" popupWeekString="#{msgs.date_entry_week_header}" popupDateFormat="#{msgs.date_entry_format}" popupGotoString="#{msgs.date_entry_goto}" />
+					<h:inputText value="#{item.assignment.dueDate}" id="dueDate" styleClass="gbDatePicker"><f:convertDateTime pattern="#{msgs.date_entry_format}" /></h:inputText>
 					<h:message for="dueDate" styleClass="alertMessageInline" />
 				</h:panelGroup>
 	
@@ -164,5 +163,5 @@
 		assignmentReleased(('gbForm:bulkNewAssignmentsTable:' + i), false);
 		categorySelected(('gbForm:bulkNewAssignmentsTable:' + i), '<h:outputText value="#{bean.extraCreditCategories}"/>');
 	}
-    
+
   </script>

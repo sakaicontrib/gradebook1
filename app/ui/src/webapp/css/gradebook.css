@@ -243,3 +243,19 @@ td.gbMessageAboveNumber {vertical-align:top; text-align:right; padding-right:2em
     vertical-align: middle;
     visibility: hidden;
 }
+
+.addPaddingContainer * {
+    padding-right: 4px;
+}
+
+.addPaddingLeft {
+    padding-left: 4px;
+}
+
+.addPaddingRight {
+    padding-right: 4px;
+}
+
+.addRadioPadding tbody tr td label {
+    padding-left:4px;
+}

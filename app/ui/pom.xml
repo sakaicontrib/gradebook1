@@ -86,13 +86,13 @@
     </dependency>
 <!-- this is required for any Sakai JSF tool -->
     <dependency>
-      <groupId>org.sakaiproject.jsf</groupId>
-      <artifactId>jsf-tool</artifactId>
+      <groupId>org.sakaiproject.jsf2</groupId>
+      <artifactId>jsf2-tool</artifactId>
     </dependency>
 <!-- these are to get full Sakai integration -->
     <dependency>
-      <groupId>org.sakaiproject.jsf</groupId>
-      <artifactId>jsf-app</artifactId>
+      <groupId>org.sakaiproject.jsf2</groupId>
+      <artifactId>jsf2-app</artifactId>
     </dependency>
 <!-- sakai2 plugin -->
 <!--
@@ -188,20 +188,9 @@
       <artifactId>dom4j</artifactId>
       <version>2.1.3</version>
     </dependency>
-<!-- MyFaces JSF -->
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-api</artifactId>
-      <version>1.1.5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.myfaces.core</groupId>
-      <artifactId>myfaces-impl</artifactId>
-      <version>1.1.5</version>
-    </dependency>
     <dependency>
       <groupId>org.apache.myfaces.tomahawk</groupId>
-      <artifactId>tomahawk</artifactId>
+      <artifactId>tomahawk21</artifactId>
       <version>1.1.14</version>
       <exclusions>
         <exclusion>
@@ -239,13 +228,13 @@
     </dependency>
 <!-- Sakai tag library -->
     <dependency>
-      <groupId>org.sakaiproject.jsf</groupId>
-      <artifactId>myfaces-widgets-depend</artifactId>
+      <groupId>org.sakaiproject.jsf2</groupId>
+      <artifactId>jsf2-widgets-sun-depend</artifactId>
       <type>pom</type>
     </dependency>
     <dependency>
-      <groupId>org.sakaiproject.jsf</groupId>
-      <artifactId>jsf-spreadsheet</artifactId>
+      <groupId>org.sakaiproject.jsf2</groupId>
+      <artifactId>jsf2-spreadsheet</artifactId>
     </dependency>
     <dependency>
     	<groupId>org.apache.poi</groupId>
@@ -256,6 +245,11 @@
     	<groupId>org.apache.poi</groupId>
     	<artifactId>poi-ooxml</artifactId>
     	<version>${sakai.poi.version}</version>    
+    </dependency>
+    <dependency>
+      <groupId>javax.el</groupId>
+      <artifactId>javax.el-api</artifactId>
+      <version>3.0.0</version>
     </dependency>
   </dependencies>
 

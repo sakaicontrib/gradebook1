@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
-<%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
+<%@ taglib uri="http://sakaiproject.org/jsf2/sakai" prefix="sakai" %>
 <script src="/library/js/spinner.js" type="text/javascript"></script>
 <f:view>
   <div class="portletBody">
@@ -26,8 +26,8 @@
 		</div>
 		
 		<sakai:tool_bar rendered="#{overviewBean.userAbleToEditAssessments}">
-    		<sakai:tool_bar_item value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" current="false" style="sakai_jsf_not_current_marker" />
-   			<sakai:tool_bar_item value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" current="false" style="sakai_jsf_not_current_marker" />
+    		<h:commandLink value="#{msgs.overview_add_item}"    action="#{overviewBean.navigateToAddAssignment}" style="sakai_jsf_not_current_marker" />
+   			<h:commandLink value="#{msgs.overview_import_item}" action="#{overviewBean.navigateToSpreadsheet}" style="sakai_jsf_not_current_marker" />
   		</sakai:tool_bar>
   		
   						
@@ -68,13 +68,13 @@
 			expanded="true"
 			rowClasses="#{overviewBean.rowStyles}"
 			headerClasses="categoryIcon,left,center,center,center,center,center,center,center,external,center">
-			
+
 			<h:column id="_toggle" rendered="#{overviewBean.categoriesEnabled}">
 				<f:facet name="header">
 					<h:outputText value="" />
 				</f:facet>
 			</h:column>
-			
+
 			<h:column id="_title">
 				<f:facet name="header">
 		    	<t:commandSortHeader columnName="name" propertyName="name" immediate="true" arrow="true">
@@ -84,7 +84,7 @@
 		    </f:facet>
 
 				<!-- Assignment / Assessment link -->
-				
+
 				<h:panelGroup rendered="#{gradebookItem.assignment}">
 					<h:commandLink action="#{overviewBean.navigateToAssignmentDetails}" rendered="#{gradebookItem.released}" onclick="SPNR.insertSpinnerInPreallocated( this, null, 'spinnerContainer' );">
 						<h:outputText value="#{gradebookItem.name}" />
@@ -99,8 +99,8 @@
 					<h:outputText value=" (#{msgs.extra_credit})" rendered="#{gradebookItem.isExtraCredit && (gradebookItem.category == null || !gradebookItem.category.isExtraCredit) }"/>
 					<t:div styleClass="allocatedSpinPlaceholder" id="spinnerContainer"></t:div>
 				</h:panelGroup>
-				
-				
+
+
 				<h:outputText value="#{gradebookItem.name}" styleClass="categoryHeading" rendered="#{gradebookItem.isCategory}" />
 				<h:outputText value=" (#{msgs.extra_credit})" rendered="#{gradebookItem.isCategory && gradebookItem.isExtraCredit}"/>
 				<h:outputText value=" (" rendered="#{gradebookItem.isCategory && (gradebookItem.dropHighest != 0 || gradebookItem.dropLowest != 0 || gradebookItem.keepHighest != 0)}" />
@@ -111,32 +111,32 @@
             <h:outputFormat value="#{msgs.cat_drop_lowest_display}" rendered="#{gradebookItem.isCategory && gradebookItem.dropLowest != 0}" >
                 <f:param value="#{gradebookItem.dropLowest}"/>
             </h:outputFormat>
-            
+
             <h:outputFormat value="#{msgs.cat_keep_highest_display}" rendered="#{gradebookItem.isCategory && gradebookItem.keepHighest != 0}" >
                 <f:param value="#{gradebookItem.keepHighest}"/>
             </h:outputFormat>
             <h:outputText value=")" rendered="#{gradebookItem.isCategory && (gradebookItem.dropHighest != 0 || gradebookItem.dropLowest != 0 || gradebookItem.keepHighest != 0)}" />
-				
+
 
 			</h:column>
 			<h:column rendered="#{overviewBean.userAbleToEditAssessments}">
 				<f:facet name="header">
-					<h:panelGroup> 
+					<h:panelGroup>
 				    	<h:outputText escape="false" value="&nbsp;" />
-				    	<h:outputText value="#{msgs.overview_edit}" styleClass="skip" />						
-					</h:panelGroup> 
+				    	<h:outputText value="#{msgs.overview_edit}" styleClass="skip" />
+					</h:panelGroup>
 		    	</f:facet>
 				<h:commandLink action="#{overviewBean.navigateToEdit}" rendered="#{gradebookItem.assignment}">
 					<h:outputText value="#{msgs.overview_edit}" /><h:outputText escape="false" value="&nbsp;" styleClass="skip" /><h:outputText styleClass="skip" value="#{gradebookItem.name}" />
 					<f:param name="assignmentId" value="#{gradebookItem.id}"/>
 				</h:commandLink>
 			</h:column>
-			
+
 			<h:column rendered="#{overviewBean.userAbleToGradeAll}">
 				<f:facet name="header">
 		    	<t:commandSortHeader columnName="mean" propertyName="mean" immediate="true" arrow="true">
 						<h:outputText value="#{msgs.overview_assignments_header_average}" />
-						<h:outputText value="#{msgs.overview_assignments_header_average_exp}" styleClass="skip"/>						
+						<h:outputText value="#{msgs.overview_assignments_header_average_exp}" styleClass="skip"/>
 						<h:outputText value="#{msgs.overview_footnote_symbol2}" />
 		      </t:commandSortHeader>
 		    </f:facet>
@@ -145,7 +145,7 @@
 					<f:converter converterId="org.sakaiproject.gradebook.jsf.converter.CLASS_AVG_CONVERTER" />
 				</h:outputText>
 			</h:column>
-			
+
 			<h:column rendered="#{overviewBean.weightingEnabled}">
 				<f:facet name="header">
 		    	<t:commandSortHeader columnName="weight" propertyName="weight" immediate="true" arrow="true">
@@ -177,11 +177,11 @@
 		    </f:facet>
 
 				<h:outputText value="#{gradebookItem.dueDate}" rendered="#{gradebookItem.assignment && gradebookItem.dueDate != null}">
-        	<gbx:convertDateTime/>
+        	<gbx:convertDateTime type="date" dateStyle="medium"/>
         </h:outputText>
 				<h:outputText value="#{msgs.score_null_placeholder}" rendered="#{gradebookItem.assignment && gradebookItem.dueDate == null}"/>
 			</h:column>
-			
+
 			<h:column>
 				<f:facet name="header">
         	<t:commandSortHeader columnName="released" propertyName="released" immediate="true" arrow="true">
@@ -191,7 +191,7 @@
 				<h:outputText value="#{msgs.overview_released_true}" rendered="#{gradebookItem.assignment && gradebookItem.released == true }"/>
 				<h:outputText value="#{msgs.overview_released_false}" rendered="#{gradebookItem.assignment && gradebookItem.released == false}"/>
 			</h:column>
-			
+
 			<h:column>
 				<f:facet name="header">
         	<t:commandSortHeader columnName="counted" propertyName="counted" immediate="true" arrow="true">
@@ -209,19 +209,19 @@
                     </t:commandSortHeader>
                 </f:facet>
                 <h:panelGroup rendered="#{gradebookItem.assignment}">
-                    <h:outputText value="#{gradebookItem.sortPosition != null ? (gradebookItem.sortPosition+1) : (gradebookItem.sortOrder+1)} " 
+                    <h:outputText value="#{gradebookItem.sortPosition != null ? (gradebookItem.sortPosition+1) : (gradebookItem.sortOrder+1)} "
                         title="#{gradebookItem.sortPosition}" styleClass="sortSpacer" />
                     <h:inputHidden id="assignmentId" value="#{gradebookItem.id}" />
                     <h:inputHidden id="sortOrder" value="#{gradebookItem.sortOrder}" />
-                    <%/* -AZ- hacks needed for safari: style="text-decoration: none !important;" 
+                    <%/* -AZ- hacks needed for safari: style="text-decoration: none !important;"
                          AND <h:outputText value="&nbsp;" escape="false" /> */%>
-                    <h:commandLink action="#{overviewBean.sortUp}" rendered="#{!gradebookItem.first}" 
+                    <h:commandLink action="#{overviewBean.sortUp}" rendered="#{!gradebookItem.first}"
                             title="#{msgs.overview_assignments_sort_up}" styleClass="sortUp" style="text-decoration: none !important;">
                         <f:param name="assignmentId" value="#{gradebookItem.id}"/>
                         <h:outputText value="&nbsp;" escape="false" />
                     </h:commandLink>
                     <h:outputText value="&nbsp;" escape="false" rendered="#{gradebookItem.first}" styleClass="sortSpacer" />
-                    <h:commandLink action="#{overviewBean.sortDown}" rendered="#{!gradebookItem.last}" 
+                    <h:commandLink action="#{overviewBean.sortDown}" rendered="#{!gradebookItem.last}"
                             title="#{msgs.overview_assignments_sort_down}" styleClass="sortDown" style="text-decoration: none !important;">
                         <f:param name="assignmentId" value="#{gradebookItem.id}"/>
                         <h:outputText value="&nbsp;" escape="false" />
@@ -229,7 +229,7 @@
                     <h:outputText value="&nbsp;" escape="false" rendered="#{gradebookItem.last}" styleClass="sortSpacer" />
                 </h:panelGroup>
             </h:column>
-			
+
 			<h:column rendered="#{overviewBean.displayGradeEditorCol}">
 				<f:facet name="header">
         	<t:commandSortHeader columnName="gradeEditor" propertyName="gradeEditor" immediate="true" arrow="true">
