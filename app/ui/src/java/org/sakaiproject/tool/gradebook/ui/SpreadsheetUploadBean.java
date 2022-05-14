@@ -1369,6 +1369,11 @@ public class SpreadsheetUploadBean extends GradebookDependentBean implements Ser
 				}
 			}
 
+			if (pointsPossible == null || pointsPossible <= 0) {
+				FacesUtil.addErrorMessage(getLocalizedString("import_assignment_invalid_points", new String[] { assignmentName }));
+				return "spreadsheetVerify";
+			}
+
 			// probably last column but not sure, so continue
 			if (getLocalizedString(CUMULATIVE_GRADE_STRING).equals(assignmentName)) {
 				continue;
