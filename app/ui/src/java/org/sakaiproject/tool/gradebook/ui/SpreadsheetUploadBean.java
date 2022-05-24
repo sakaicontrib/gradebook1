@@ -1383,6 +1383,26 @@ public class SpreadsheetUploadBean extends GradebookDependentBean implements Ser
 
 			// Get GradebookAssignment object from assignment name
 			GradebookAssignment assignment = getAssignmentByName(grAssignments, assignmentName);
+
+			final List<Category> categories = getGradebookManager().getCategoriesWithAssignments(getGradebookId());
+			if (categories != null && categories.size() > 0) {
+				for (final Category category : categories) {
+					if (category.isDropScores()) {
+						List<GradebookAssignment> assignmentsList = category.getAssignmentList();
+						if (assignmentList != null) {
+							for (final GradebookAssignment assignmentItem : assignmentsList) {
+								if (assignmentItem.getId().equals(assignment.getId())) {
+									if (!category.getItemValue().equals(pointsPossible)) {
+										FacesUtil.addErrorMessage(getLocalizedString("import_assignment_dropkeep_points_mismatch", new String[] { assignmentName }));
+										return "spreadsheetVerify";
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 			List gradeRecords = new ArrayList();
 
 			// if assignment == null, need to create a new one plus all the grade records
