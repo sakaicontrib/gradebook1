@@ -1,3 +1,5 @@
+<script src="/library/js/spinner.js" type="text/javascript"></script>
+
 <f:view>
 	<div class="portletBody">
 	  <h:form id="gbForm">
@@ -28,7 +30,8 @@
 				id="saveButton"
 				styleClass="active"
 				value="#{msgs.edit_assignment_save_changes}"
-				action="#{editAssignmentBean.updateAssignment}"/>
+				action="#{editAssignmentBean.updateAssignment}"
+				onclick="SPNR.disableControlsAndSpin( this, null );" />
 			<h:commandButton
 				value="#{msgs.add_assignment_cancel}"
 				action="#{editAssignmentBean.navigateBack}"
