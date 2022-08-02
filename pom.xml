@@ -5,12 +5,12 @@
       <groupId>org.sakaiproject</groupId>
       <artifactId>master</artifactId>
       <version>19-SNAPSHOT</version>
-      <relativePath>../master/pom.xml</relativePath>
     </parent>
 
   <name>Sakai Gradebook Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>gradebook-base</artifactId>
+  <version>22-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
