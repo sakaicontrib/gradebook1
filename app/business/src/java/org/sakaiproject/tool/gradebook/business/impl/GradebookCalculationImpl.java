@@ -28,7 +28,9 @@ import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.sakaiproject.service.gradebook.shared.ConflictingCategoryNameException;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
+import org.sakaiproject.service.gradebook.shared.StaleObjectModificationException;
 import org.sakaiproject.tool.gradebook.GradebookAssignment;
 import org.sakaiproject.tool.gradebook.AssignmentGradeRecord;
 import org.sakaiproject.tool.gradebook.Category;
@@ -36,7 +38,7 @@ import org.sakaiproject.tool.gradebook.CourseGrade;
 import org.sakaiproject.tool.gradebook.CourseGradeRecord;
 import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.business.GradebookManager;
-import org.springframework.orm.hibernate4.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -419,9 +421,14 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 
 		return totalPointsPossible;
 	}
-	
+
+	@Override
+	public Long createCategory(Long gradebookId, String name, Double weight, Integer dropLowest, Integer dropHighest, Integer keepHighest, Boolean is_extra_credit) throws ConflictingCategoryNameException, StaleObjectModificationException {
+		return super.createCategory(gradebookId, name, weight, dropLowest, dropHighest, keepHighest, is_extra_credit, false, null);
+	}
+
 	@Override
     public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
-        super.applyDropScores(gradeRecords);
+        super.applyDropScores(gradeRecords, GradebookService.CATEGORY_TYPE_NO_CATEGORY);
     }
 }

@@ -139,9 +139,8 @@
 <!-- End database dependencies -->
 <!--${sakai.spring.groupId}${sakai.spring.artifactId}${sakai.spring.version}-->
     <dependency>
-      <groupId>${sakai.spring.groupId}</groupId>
-      <artifactId>${sakai.spring.test.artifactId}</artifactId>
-      <version>${sakai.spring.test.version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
     </dependency>
     <dependency>
       <groupId>aopalliance</groupId>
