@@ -23,7 +23,7 @@
     <!-- EB Entity Providers - classes in sakai-gradebook-app-ui -->
     <bean id="GradebookEntityProvider" 
     	parent="org.sakaiproject.entitybroker.entityprovider.AbstractEntityProvider"
-    	class="org.sakaiproject.tool.gradebook.ui.helpers.entity.GradebookEntityProvider"
+    	class="org.sakaiproject.tool.gradebook.ui.helpers.entity.[GradebookEntityProvider"
         >
         <property name="gradebookService" ref="org.sakaiproject.service.gradebook.GradebookService" />
         <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />

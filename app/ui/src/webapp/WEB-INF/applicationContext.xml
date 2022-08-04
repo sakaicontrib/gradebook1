@@ -8,7 +8,7 @@
    </bean>
    
     <bean id="GradebookEntityProvider" class="org.sakaiproject.tool.gradebook.ui.helpers.entity.GradebookEntityProvider"
-      init-method="init" destroy-method="destroy">
+      destroy-method="destroy">
       <property name="entityProviderManager" ref="org.sakaiproject.entitybroker.entityprovider.EntityProviderManager" />
       <property name="gradebookService" ref="org.sakaiproject.service.gradebook.GradebookService" />
     </bean>

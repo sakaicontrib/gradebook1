@@ -133,7 +133,7 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 	}
 
 	@Override
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options) {
+	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions) {
 		Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(fromContext);
 
 		GradebookInformation gradebookInformation = this.gradebookService.getGradebookInformation(gradebook.getUid());
@@ -144,7 +144,7 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 	}
 
 	@Override
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options, boolean cleanup) {
+	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions, boolean cleanup) {
 		if (cleanup) {
 
 			Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(toContext);
@@ -159,7 +159,7 @@ public class GradebookEntityProducer implements EntityProducer, EntityTransferre
 		}
 
 		// now migrate
-		return transferCopyEntities(fromContext, toContext, ids, options);
+		return transferCopyEntities(fromContext, toContext, ids, transferOptions);
 	}
 
 	@Override

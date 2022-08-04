@@ -421,19 +421,14 @@ public class GradebookCalculationImpl extends GradebookManagerHibernateImpl impl
 
 		return totalPointsPossible;
 	}
-	
-	@Override
-		public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
-				if (gradeRecords != null && gradeRecords.iterator().hasNext()) {
-					AssignmentGradeRecord firstRecord = gradeRecords.iterator().next();
-					super.applyDropScores(gradeRecords, firstRecord.getGradableObject().getGradebook().getCategory_type());
-				}
-		}
 
 	@Override
-	public Long createCategory(Long gradebookId, String name, Double weight, Integer dropLowest, Integer dropHighest,
-			Integer keepHighest, Boolean is_extra_credit)
-			throws ConflictingCategoryNameException, StaleObjectModificationException {
-		return super.createCategory(gradebookId, name, weight, dropLowest, dropHighest, keepHighest, is_extra_credit, false);
+	public Long createCategory(Long gradebookId, String name, Double weight, Integer dropLowest, Integer dropHighest, Integer keepHighest, Boolean is_extra_credit) throws ConflictingCategoryNameException, StaleObjectModificationException {
+		return super.createCategory(gradebookId, name, weight, dropLowest, dropHighest, keepHighest, is_extra_credit, false, null);
 	}
+
+	@Override
+    public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords) {
+        super.applyDropScores(gradeRecords, GradebookService.CATEGORY_TYPE_NO_CATEGORY);
+    }
 }
