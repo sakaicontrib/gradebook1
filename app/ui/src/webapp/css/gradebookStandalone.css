@@ -129,10 +129,16 @@ td.subItemSummary table tr td {
     font-weight:bold;
     text-decoration:none;
 }
+.currentSort img {
+    filter: var(--sakai-image-invert);
+}
 
 .notCurrentSort {
 	font-weight:normal;
     text-decoration:none;
+}
+.notCurrentSort img {
+    filter: var(--sakai-image-invert);
 }
 
 /*

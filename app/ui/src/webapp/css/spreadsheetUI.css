@@ -2,7 +2,7 @@ div#mainwrap {
    position: relative;
 }
 div#headers {
-   background-color: #ddd;
+   background-color: var(--sakai-background-color-3);
    border: 1px solid #afafaf;
    border-bottom: 4px solid #afafaf;
    overflow: hidden;
@@ -33,7 +33,7 @@ ul#q1 {
 }
 
    ul#q1 li {
-   background-color: #ddd;
+   background-color: var(--sakai-background-color-3);
       border: 1px solid #a3a3a3;
       bottom: 0;
       display: block;

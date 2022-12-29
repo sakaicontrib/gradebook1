@@ -28,6 +28,7 @@ import org.sakaiproject.tool.gradebook.ui.AssignmentGradeRow;
 public class GradebookItemTableRenderer extends Renderer {
 
 	private static final String CURSOR = "cursor:pointer";
+	private static final String EXP_COL_STYLE_CLASS = "expColIcon";
 	private static final String EXPANDED_IMG = "/images/expand.gif";
 	private static final String COLLAPSED_IMG = "/images/collapse.gif";
 	
@@ -113,11 +114,13 @@ public class GradebookItemTableRenderer extends Renderer {
 			image.setValue(path + EXPANDED_IMG);
 			image.setAlt(imgExpandAlt);
 			image.setTitle(imgExpandTitle);
+			image.setStyleClass(EXP_COL_STYLE_CLASS);
 		}
 		else {
 			image.setValue(path + COLLAPSED_IMG);
 			image.setAlt(imgCollapseAlt);
 			image.setTitle(imgCollapseTitle);
+			image.setStyleClass(EXP_COL_STYLE_CLASS);
 		}
 
 		// Render the header facets (if any)
@@ -158,6 +161,7 @@ public class GradebookItemTableRenderer extends Renderer {
 					writer.writeURIAttribute("src", image.getValue(), null);
 					writer.writeURIAttribute("onclick", onclickText, null);
 					writer.writeURIAttribute("style", CURSOR, null);
+					writer.writeURIAttribute("class", EXP_COL_STYLE_CLASS, null);
 					writer.writeURIAttribute("alt", image.getAlt(), null);
 					writer.writeURIAttribute("title", image.getTitle(), null);
 					writer.writeURIAttribute("id", "expandCollapseAll", null);
@@ -398,6 +402,7 @@ public class GradebookItemTableRenderer extends Renderer {
 						writer.writeURIAttribute("src", image.getValue(), null);
 						writer.writeURIAttribute("onclick", hideTr, null);
 						writer.writeURIAttribute("style", CURSOR, null);
+						writer.writeURIAttribute("class", EXP_COL_STYLE_CLASS, null);
 						writer.writeURIAttribute("alt", image.getAlt(), null);
 						writer.writeURIAttribute("title", image.getTitle(), null);
 						writer.writeURIAttribute("id", imgId, null);

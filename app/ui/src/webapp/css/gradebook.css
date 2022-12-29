@@ -199,6 +199,7 @@ td.gbMessageAboveNumber {vertical-align:top; text-align:right; padding-right:2em
     background-repeat: no-repeat;
     background-position: center center;
     text-decoration: none;
+    filter: var(--sakai-image-invert);
 }
 
 .sortDown {
@@ -207,6 +208,7 @@ td.gbMessageAboveNumber {vertical-align:top; text-align:right; padding-right:2em
     background-repeat: no-repeat;
     background-position: center center;
     text-decoration: none !important;
+    filter: var(--sakai-image-invert);
 }
 
 #exportPrefsLink {
@@ -242,4 +244,24 @@ td.gbMessageAboveNumber {vertical-align:top; text-align:right; padding-right:2em
     display: inline;
     vertical-align: middle;
     visibility: hidden;
+}
+
+table.listHier tr.external:nth-child(even) {
+    color: var(--sakai-color-gray--darker-4);
+}
+
+table.listHier tr.external:nth-child(even) a[href] {
+    color: var(--sakai-primary-color-1);
+}
+
+table.listHier tr.external:nth-child(even) .sortUp, tr.external:nth-child(even) .sortDown {
+    filter: none;
+}
+
+.expColIcon {
+    filter: var(--sakai-image-invert);
+}
+
+.currentSort > img {
+    filter: var(--sakai-image-invert);
 }
