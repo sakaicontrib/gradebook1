@@ -10,7 +10,7 @@
   <name>Sakai Gradebook Project</name>
   <groupId>org.sakaiproject</groupId>
   <artifactId>gradebook-base</artifactId>
-  <version>22-SNAPSHOT</version>
+  <version>23-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
