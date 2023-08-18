@@ -4,7 +4,7 @@
     <parent>
       <groupId>org.sakaiproject</groupId>
       <artifactId>master</artifactId>
-      <version>22-SNAPSHOT</version>
+      <version>23-SNAPSHOT</version>
     </parent>
 
   <name>Sakai Gradebook Project</name>
@@ -32,14 +32,8 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-gradebook-service</artifactId>
-        <version>${project.version}</version>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject.edu-services.gradebook</groupId>
-        <artifactId>gradebook-service-impl</artifactId>
+        <groupId>org.sakaiproject.grading</groupId>
+        <artifactId>sakai-grading-impl</artifactId>
         <version>${sakai.version}</version>
       </dependency>
       <dependency>
