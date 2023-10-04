@@ -347,6 +347,10 @@ public class InstructorViewBean extends ViewByStudentBean implements Serializabl
 									(originalScore == null && newScore != null) ) {
 								gradeRecord.setPercentEarned(newScore);
 								updatedGradeRecords.add(gradeRecord);
+								getGradebookBean().postEvent("gradebook.updateItemScore",
+									"/gradebook/" + getGradebookUid() + "/" + gradeRecord.getAssignment().getName() + "/"
+									+ gradeRecord.getStudentId() + "/" + gradeRecord.getPercentEarned() + "/" + getAuthzLevel(),
+									true);
 							}
 
 						}	else if (getGradeEntryByLetter()) {
@@ -357,6 +361,10 @@ public class InstructorViewBean extends ViewByStudentBean implements Serializabl
 									(originalScore == null && newScore != null) ) {
 								gradeRecord.setLetterEarned(newScore);
 								updatedGradeRecords.add(gradeRecord);
+								getGradebookBean().postEvent("gradebook.updateItemScore",
+									"/gradebook/" + getGradebookUid() + "/" + gradeRecord.getAssignment().getName() + "/"
+									+ gradeRecord.getStudentId() + "/" + gradeRecord.getLetterEarned() + "/" + getAuthzLevel(),
+									true);
 							}
 						}
 					}

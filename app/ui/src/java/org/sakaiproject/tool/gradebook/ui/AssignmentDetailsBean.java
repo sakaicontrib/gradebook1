@@ -596,10 +596,14 @@ public class AssignmentDetailsBean extends EnrollmentTableBean {
 	 * Action listener to update scores.
 	 */
 	public void processUpdateScores(final ActionEvent event) {
+		String score;
 		try {
 			for (final AssignmentGradeRecord agr : this.updatedGradeRecords) {
+				score = getGradeEntryByPoints() ? agr.getPointsEarned().toString() :
+						getGradeEntryByPercent() ? agr.getPercentEarned().toString() :
+						getGradeEntryByLetter() ? agr.getLetterEarned() : null;
 				getGradebookBean().postEvent("gradebook.updateItemScore", "/gradebook/" + getGradebookUid() + "/"
-						+ agr.getAssignment().getName() + "/" + agr.getStudentId() + "/" + agr.getPointsEarned() + "/" + getAuthzLevel(),
+						+ agr.getAssignment().getName() + "/" + agr.getStudentId() + "/" + score + "/" + getAuthzLevel(),
 						true);
 			}
 			saveScores();
