@@ -215,6 +215,7 @@ function showHideDiv(hideDivisionNo, context, expandAlt, collapseAlt, expandTitl
         imgNo.src = context + "/images/collapse.gif";
         imgNo.alt = collapseAlt;
         imgNo.title = collapseTitle;
+        imgNo.classList.add("expColIcon");
       }
     }
     else
@@ -226,6 +227,7 @@ function showHideDiv(hideDivisionNo, context, expandAlt, collapseAlt, expandTitl
         imgNo.src = context + "/images/expand.gif";
         imgNo.alt = expandAlt;
         imgNo.title = expandTitle;
+        imgNo.classList.add("expColIcon");
       }
     }
   }
@@ -257,11 +259,13 @@ function showHideAll(numToggles, context, expandAlt, collapseAlt, expandTitle, c
 		      imgNo.src = context + "/images/collapse.gif";
 		      imgNo.alt =  collapseAlt;
 		      imgNo.title = collapseTitle;
+              imgNo.classList.add("expColIcon");
 		    }
 		    if (imgAll) {
 		      imgAll.src = context + "/images/collapse.gif";
 		      imgAll.alt =  collapseAlt;
 		      imgAll.title = collapseTitle;
+              imgAll.classList.add("expColIcon");
 		    }
 		  }
 		  else {
@@ -272,12 +276,14 @@ function showHideAll(numToggles, context, expandAlt, collapseAlt, expandTitle, c
 		      imgNo.src = context + "/images/expand.gif";
 		      imgNo.alt =  expandAlt;
 		      imgNo.title = expandTitle;
+              imgNo.classList.add("expColIcon");
 		    }
 
 		    if (imgAll) {
 		    	imgAll.src = context + "/images/expand.gif";
 		    	imgAll.alt =  expandAlt;
-		      imgAll.title = expandTitle;
+		        imgAll.title = expandTitle;
+                imgAll.classList.add("expColIcon");
 		    }
 		  }
 	  }
