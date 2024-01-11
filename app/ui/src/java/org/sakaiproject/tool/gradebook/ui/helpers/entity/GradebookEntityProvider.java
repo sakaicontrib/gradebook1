@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.entitybroker.EntityReference;
 import org.sakaiproject.entitybroker.EntityView;
 import org.sakaiproject.entitybroker.entityprovider.CoreEntityProvider;
@@ -86,6 +87,9 @@ public class GradebookEntityProvider extends AbstractEntityProvider implements
 	
 	@Setter
 	private SecurityService securityService;
+
+	@Setter
+	private DeveloperHelperService developerHelperService;
 
 	@Override
 	public String getEntityPrefix() {
