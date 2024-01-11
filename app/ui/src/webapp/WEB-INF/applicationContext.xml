@@ -11,6 +11,10 @@
       destroy-method="destroy">
       <property name="entityProviderManager" ref="org.sakaiproject.entitybroker.entityprovider.EntityProviderManager" />
       <property name="gradebookService" ref="org.sakaiproject.service.gradebook.GradebookService" />
+      <property name="developerHelperService" ref="org.sakaiproject.entitybroker.DeveloperHelperService" />
+      <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService" />
+      <property name="siteService" ref="org.sakaiproject.site.api.SiteService" />
+      <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
     </bean>
     
     <!-- handles configuration of internationalization messages -->
