@@ -599,9 +599,12 @@ public class AssignmentDetailsBean extends EnrollmentTableBean {
 		String score;
 		try {
 			for (final AssignmentGradeRecord agr : this.updatedGradeRecords) {
-				score = getGradeEntryByPoints() ? agr.getPointsEarned().toString() :
-						getGradeEntryByPercent() ? agr.getPercentEarned().toString() :
-						getGradeEntryByLetter() ? agr.getLetterEarned() : null;
+				String pointsEarned = agr.getPointsEarned() != null ? agr.getPointsEarned().toString() : null;
+				String percentEarned = agr.getPercentEarned() != null ? agr.getPercentEarned().toString() : null;
+				String letterEarned = agr.getLetterEarned() != null ? agr.getLetterEarned() : null;
+				score = getGradeEntryByPoints() ? pointsEarned :
+						getGradeEntryByPercent() ? percentEarned :
+						getGradeEntryByLetter() ? letterEarned : null;
 				getGradebookBean().postEvent("gradebook.updateItemScore", "/gradebook/" + getGradebookUid() + "/"
 						+ agr.getAssignment().getName() + "/" + agr.getStudentId() + "/" + score + "/" + getAuthzLevel(),
 						true);
